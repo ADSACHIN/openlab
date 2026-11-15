@@ -12,6 +12,7 @@ flowchart LR
   P4 --> P5["Phase 5<br/>Community & Polish"]
   P5 --> P6[Phase 6<br/>Advanced Labs]
   style P0 fill:#2d6a4f,color:#fff
+  style P1 fill:#2d6a4f,color:#fff
 ```
 
 ## Phase 0 — Foundation ✅ (complete)
@@ -21,20 +22,24 @@ flowchart LR
 - [x] Project, Git and GitHub preparation
 - [x] Tooling configuration (Vite, TS, ESLint, Prettier, Vitest, Playwright)
 - [x] CI/CD workflow definitions (not yet executed)
-- [ ] First commit and push (awaiting approval)
+- [x] First commit (`004a900`, 2026-11-15)
+- [ ] Push to GitHub (awaiting repository creation)
 
-## Phase 1 — Application Shell
+## Phase 1 — Application Shell ✅ (built 2026-11-15, deployment pending push)
 
 Goal: an empty but deployed site with navigation, theming and routing.
 
-- `index.html`, `src/app/main.tsx`, `App.tsx`, `HashRouter` setup
-- Layout: header, sidebar/nav, content area, footer
-- Design tokens (`src/styles/tokens.css`), light/dark theme, reduced-motion support
-- Home page (domain catalogue, driven by `src/data`)
-- 404 route
-- Error boundary
-- First Playwright smoke test + axe audit
-- First successful GitHub Pages deployment
+- [x] `index.html`, `src/app/main.tsx`, `App.tsx`, `HashRouter` setup
+- [x] Layout: header, nav, content area, footer, skip link
+- [x] Design tokens (`src/styles/tokens.css`), light/dark/system theme, reduced-motion support
+- [x] Home page (domain catalogue, driven by `src/data/domains.ts`)
+- [x] Domain placeholder page (`#/domains/:id`)
+- [x] 404 route
+- [x] Error boundary
+- [x] Preferences persisted through `src/core` (safe localStorage wrapper)
+- [x] Production-only Content Security Policy injection
+- [x] Unit, component, Playwright smoke and axe accessibility tests (light + dark)
+- [ ] First successful GitHub Pages deployment (needs repository + push)
 
 ## Phase 2 — Learning Engine (`src/core`)
 

@@ -94,7 +94,7 @@ flowchart TB
     D --> P
   end
 
-  P --> Live["https://adsachin14.github.io/openlab/"]
+  P --> Live["https://adsachin.github.io/openlab/"]
 
   style Live fill:#2d6a4f,color:#fff
 ```
@@ -108,12 +108,12 @@ Properties:
 
 ## Environments
 
-| Environment   | URL                                     | Trigger                            |
-| ------------- | --------------------------------------- | ---------------------------------- |
-| Local dev     | `http://localhost:5173/openlab/`        | `npm run dev`                      |
-| Local preview | `http://localhost:4173/openlab/`        | `npm run build && npm run preview` |
-| CI preview    | ephemeral, inside the e2e job           | every PR                           |
-| Production    | `https://adsachin14.github.io/openlab/` | push to `main`                     |
+| Environment   | URL                                   | Trigger                            |
+| ------------- | ------------------------------------- | ---------------------------------- |
+| Local dev     | `http://localhost:5173/openlab/`      | `npm run dev`                      |
+| Local preview | `http://localhost:4173/openlab/`      | `npm run build && npm run preview` |
+| CI preview    | ephemeral, inside the e2e job         | every PR                           |
+| Production    | `https://adsachin.github.io/openlab/` | push to `main`                     |
 
 There is no staging environment. PR previews can be added later with a free Pages-per-branch
 pattern if ever needed; not planned.

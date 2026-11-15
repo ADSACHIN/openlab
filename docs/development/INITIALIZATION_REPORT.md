@@ -187,11 +187,11 @@ gh auth login
 gh repo create openlab --public --source=. --remote=origin \
   --description "Free and Open-Source Interactive Technology Learning Universe"
 git push -u origin main
-gh api -X POST repos/ADSACHIN14/openlab/pages -f build_type=workflow
+gh api -X POST repos/ADSACHIN/openlab/pages -f build_type=workflow
 
 # --- Option B: Web UI ---
 # 1. https://github.com/new  → name: openlab, Public, no README/.gitignore/license
-git remote add origin https://github.com/ADSACHIN14/openlab.git
+git remote add origin https://github.com/ADSACHIN/openlab.git
 git push -u origin main
 # 2. Settings → Pages → Source: "GitHub Actions"
 ```
@@ -199,7 +199,7 @@ git push -u origin main
 ## 8. Remaining manual actions
 
 1. ~~Install npm~~ Done 2026-11-15.
-2. ~~Replace `<github-username>`~~ Done: set to `ADSACHIN14` (Pages host `adsachin14.github.io`).
+2. ~~Replace `<github-username>`~~ Done: set to `ADSACHIN14` (Pages host `adsachin.github.io`).
 3. Review the files, then approve the first commit (message in `DEVELOPMENT_PROGRESS.md`).
 4. Create the GitHub repository and push (§7).
 5. Enable GitHub Pages with source = GitHub Actions (§7).

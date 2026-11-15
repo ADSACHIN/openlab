@@ -5,27 +5,42 @@ Phase definitions: [ROADMAP.md](ROADMAP.md).
 
 ## Current status
 
-| Item            | State                                     |
-| --------------- | ----------------------------------------- |
-| Phase           | **0 — Foundation**                        |
-| Phase 0 status  | Complete, awaiting first-commit approval  |
-| Next phase      | 1 — Application Shell (awaiting approval) |
-| Live deployment | None yet                                  |
-| Git             | Initialised on `main`, **no commits**     |
-| GitHub remote   | Not created                               |
+| Item               | State                                                              |
+| ------------------ | ------------------------------------------------------------------ |
+| Phase              | **1 — Application Shell** (built, not deployed)                    |
+| Phase 0 / 1 status | Both complete locally; Phase 1 deployment waits on the GitHub push |
+| Next phase         | 2 — Learning Engine (awaiting approval)                            |
+| Live deployment    | None yet                                                           |
+| Git                | `main`, first commit `004a900` (2026-11-15), no remote yet         |
+| GitHub remote      | Not created                                                        |
 
 ## Blockers / manual actions required
 
 | #   | Action                                                                       | Owner         | Status  |
 | --- | ---------------------------------------------------------------------------- | ------------- | ------- |
 | 1   | Install npm — done 2026-11-15 (npm 12.2.0 via apt after `apt update`)        | Project owner | ✅ Done |
-| 2   | Approve and run the first commit                                             | Project owner | ⏳ Open |
+| 2   | First commit `004a900` made 2026-11-15 after approval                        | Done          | ✅ Done |
+| 7   | Commit Phase 1 work (awaiting approval)                                      | Project owner | ⏳ Open |
 | 3   | Create GitHub repository `openlab` (gh CLI or web UI) and push               | Project owner | ⏳ Open |
 | 4   | Enable GitHub Pages with source = GitHub Actions                             | Project owner | ⏳ Open |
 | 5   | Replace `<github-username>` placeholders — set to `ADSACHIN14` on 2026-11-14 | Claude Code   | ✅ Done |
 | 6   | (Optional) Install GitHub CLI                                                | Project owner | ⏳ Open |
 
 ## Log
+
+### 2026-11-15 — Phase 1: application shell built
+
+- `index.html` (no inline scripts, SVG favicon, noscript notice), `src/app/main.tsx`, `App.tsx`, `routes.tsx`.
+- Layout: sticky header with brand, primary nav, theme toggle; skip link; focusable `<main>`; footer with the no-tracking promise.
+- Theming: `src/styles/tokens.css` light/dark/system via `data-theme`, OS fallback through `prefers-color-scheme`; reduced motion via media query and `data-motion` override.
+- Preferences: `src/core/storage/safeStorage.ts` (only module touching localStorage, defensive) + `src/core/preferences` (versioned schema, strict guard). App-level `PreferencesProvider` reflects to `<html>`.
+- Pages: home (hero + 8-domain catalogue from `src/data/domains.ts`), domain placeholder (`#/domains/:id`), 404. Class-based `ErrorBoundary` (the one sanctioned class component).
+- Components: `DomainCard`, `DomainIcon`, `StatusBadge`, `ThemeToggle` (stateless; app wires state). `cx()` util for CSS Module classes under `noUncheckedIndexedAccess`.
+- Security: production-only CSP meta injected by a Vite plugin (dev needs HMR websocket and Fast Refresh inline script).
+- Tests: 21 Vitest (unit + component), 6 Playwright e2e, 6 axe audits (3 routes × light/dark) — all pass locally in Chromium. Chromium installed via `npx playwright install chromium` (no sudo needed).
+- Build: `dist/` = 21 KB app JS + 255 KB React vendor chunk + 11.5 KB CSS (gzip 8.2 / 81 / 3 KB).
+- Decisions: path alias for `src/types` is `@typings/*` because TypeScript reserves `@types/`; `role="list"` kept on the catalogue `<ul>` (Safari drops list semantics with `list-style: none`) with a justified lint disable; removed `passWithNoTests`.
+- Not done: push and first Pages deployment (no GitHub repository yet).
 
 ### 2026-11-15 — Tooling validated with real installs
 

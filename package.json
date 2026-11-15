@@ -5,13 +5,13 @@
   "description": "OPENLAB — Free and Open-Source Interactive Technology Learning Universe",
   "license": "MIT",
   "type": "module",
-  "homepage": "https://adsachin14.github.io/openlab/",
+  "homepage": "https://adsachin.github.io/openlab/",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ADSACHIN14/openlab.git"
+    "url": "https://github.com/ADSACHIN/openlab.git"
   },
   "bugs": {
-    "url": "https://github.com/ADSACHIN14/openlab/issues"
+    "url": "https://github.com/ADSACHIN/openlab/issues"
   },
   "engines": {
     "node": ">=22.22.0"

@@ -70,7 +70,7 @@ Everything else is enforced in code review.
 Order (Prettier does not sort; keep it tidy manually or via editor):
 
 1. React / third-party
-2. `@core`, `@components`, `@hooks`, `@utils`, `@types`, `@data`
+2. `@core`, `@components`, `@hooks`, `@utils`, `@typings`, `@data`
 3. Relative imports within the same folder
 4. CSS Module import last
 

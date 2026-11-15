@@ -77,8 +77,15 @@ npm run test:a11y         # accessibility project only
 
 CI runs E2E against the production `dist/` via `vite preview` (see `.github/workflows/ci.yml`).
 
-## Phase 0 status
+## Status (2026-11-15)
 
-No tests exist yet because no application code exists. `tests/setup.ts` and all configuration
-are in place. **No test results have been produced or claimed.** The first tests arrive with
-the Phase 1 app shell (a smoke e2e test and a home-route axe audit).
+Phase 1 ships the first real tests, all passing locally:
+
+| Suite                     | Count | Covers                                                                       |
+| ------------------------- | ----- | ---------------------------------------------------------------------------- |
+| Vitest unit               | 14    | safe localStorage wrapper, preferences schema/guards, domain catalogue, `cx` |
+| Vitest component          | 7     | HomePage, DomainPage, full App (hash routing, 404, theme toggle persistence) |
+| Playwright e2e (chromium) | 6     | load, navigation, deep link + reload, 404, theme persistence, skip link      |
+| Playwright axe            | 6     | home, domain, 404 × light and dark, WCAG 2.x A/AA tags, zero violations      |
+
+Firefox and mobile-chrome projects run in CI (only Chromium is installed locally).

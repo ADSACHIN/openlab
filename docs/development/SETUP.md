@@ -23,15 +23,11 @@ git config --global init.defaultBranch main
 ## Install and run
 
 ```bash
-git clone https://github.com/ADSACHIN14/openlab.git
+git clone https://github.com/ADSACHIN/openlab.git
 cd openlab
 npm install                      # creates package-lock.json on first run
 npm run dev                      # http://localhost:5173/openlab/
 ```
-
-> **Phase 0 note:** no application entry point exists yet, so `npm run dev` will serve nothing
-> until Phase 1 adds `index.html` and `src/app/main.tsx`. `npm install` and `npm run lint`
-> already work.
 
 ### Playwright browsers (for e2e / a11y tests)
 
@@ -88,7 +84,7 @@ git push -u origin main
 2. Then:
 
 ```bash
-git remote add origin https://github.com/ADSACHIN14/openlab.git   # or git@github.com:ADSACHIN14/openlab.git
+git remote add origin https://github.com/ADSACHIN/openlab.git   # or git@github.com:ADSACHIN/openlab.git
 git push -u origin main
 ```
 
@@ -97,13 +93,13 @@ git push -u origin main
 **With gh:**
 
 ```bash
-gh api -X POST repos/ADSACHIN14/openlab/pages -f build_type=workflow
+gh api -X POST repos/ADSACHIN/openlab/pages -f build_type=workflow
 ```
 
 **Web UI:** Repository → Settings → Pages → _Build and deployment_ → Source: **GitHub Actions**.
 
 The `deploy.yml` workflow then publishes `dist/` on every push to `main`.
-Site URL: `https://adsachin14.github.io/openlab/`.
+Site URL: `https://adsachin.github.io/openlab/`.
 
 ### Placeholders to replace
 

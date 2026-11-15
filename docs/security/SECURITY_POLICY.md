@@ -30,8 +30,8 @@ Explicitly **not** at risk: server credentials, personal data, payment data — 
   versioned schema, rejected on unknown keys, size-capped. No `eval`, no `Function()`.
 - **localStorage** stores only the progress schema under a namespaced key; nothing sensitive.
 - **No third-party scripts** at runtime. No CDN-loaded code. Fonts are self-hosted or system.
-- **Content Security Policy** via `<meta http-equiv="Content-Security-Policy">` in `index.html`
-  (Phase 1): `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`.
+- **Content Security Policy** injected into `index.html` at build time by the `openlab:csp` plugin in
+  `vite.config.ts` (production only; the dev server needs inline scripts and a websocket). Implemented in Phase 1: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`.
   (`style-src 'unsafe-inline'` is needed for computed SVG/Canvas geometry; revisit if avoidable.)
   Note: GitHub Pages does not let us set HTTP headers, so meta-CSP is the available mechanism and
   `frame-ancestors` in a meta tag is advisory only.

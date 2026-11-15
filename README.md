@@ -8,7 +8,7 @@ Learn technology by _doing_ — interactive visualizations, simulators, lessons 
 Zero cost. No account. No tracking. Runs entirely in your browser.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status: Phase 0](https://img.shields.io/badge/status-phase%200%20%E2%80%94%20foundation-blue)](ROADMAP.md)
+[![Status: Phase 0](https://img.shields.io/badge/status-phase%201%20%E2%80%94%20app%20shell-blue)](ROADMAP.md)
 [![Static Site](https://img.shields.io/badge/hosting-GitHub%20Pages-222)](docs/architecture/SYSTEM_ARCHITECTURE.md)
 
 </div>
@@ -38,7 +38,7 @@ no paid API and no telemetry. Your progress lives in your own browser's `localSt
 | **AI & ML**          | Perceptrons, gradient descent, tokenisation, attention — interactively           |
 | **Cloud & DevOps**   | CI/CD, containers, infrastructure as code, observability                         |
 
-> **Status:** Phase 0 (foundation) is complete. No learning modules are implemented yet.
+> **Status:** Phase 1 (application shell) is built: navigation, theming, domain catalogue. No learning modules are implemented yet.
 > See [ROADMAP.md](ROADMAP.md) and [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md).
 
 ## Principles
@@ -71,7 +71,7 @@ See [docs/architecture/](docs/architecture/) for full design documentation and A
 ## Quick Start (development)
 
 ```bash
-git clone https://github.com/ADSACHIN14/openlab.git
+git clone https://github.com/ADSACHIN/openlab.git
 cd openlab
 npm install
 npm run dev
