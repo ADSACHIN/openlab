@@ -1,0 +1,27 @@
+name: Bug report
+description: Something is broken
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: Steps to reproduce, expected vs actual behaviour.
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: Page / route
+      placeholder: "#/networking/packet-journey"
+  - type: input
+    id: env
+    attributes:
+      label: Browser and OS
+      placeholder: Firefox 150 on Fedora 44
+  - type: checkboxes
+    id: a11y
+    attributes:
+      label: Accessibility
+      options:
+        - label: This bug affects keyboard or screen-reader users

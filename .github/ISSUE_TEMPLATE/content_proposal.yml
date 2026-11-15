@@ -1,0 +1,45 @@
+name: Learning content proposal
+description: Propose a lesson, lab or simulator
+labels: [content]
+body:
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        [
+          networking,
+          linux-os,
+          cybersecurity,
+          programming,
+          system-design,
+          computer-science,
+          ai-ml,
+          cloud-devops,
+          cross-domain,
+        ]
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options: [lesson, lab, simulator, visualisation]
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Learning outcome
+      description: "After this, a learner will be able to…"
+    validations:
+      required: true
+  - type: textarea
+    id: interaction
+    attributes:
+      label: What does the learner interact with?
+      description: Describe the visualisation or simulation idea. Sketches welcome.
+  - type: input
+    id: prereq
+    attributes:
+      label: Prerequisite lessons (if any)
