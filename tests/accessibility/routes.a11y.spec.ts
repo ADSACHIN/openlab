@@ -5,6 +5,8 @@ const ROUTES: readonly { name: string; path: string }[] = [
   { name: 'home', path: './' },
   { name: 'domain', path: './#/domains/networking' },
   { name: 'not-found', path: './#/missing' },
+  { name: 'search', path: './#/search' },
+  { name: 'progress', path: './#/progress' },
 ];
 
 for (const theme of ['light', 'dark'] as const) {

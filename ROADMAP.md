@@ -13,6 +13,7 @@ flowchart LR
   P5 --> P6[Phase 6<br/>Advanced Labs]
   style P0 fill:#2d6a4f,color:#fff
   style P1 fill:#2d6a4f,color:#fff
+  style P2 fill:#2d6a4f,color:#fff
 ```
 
 ## Phase 0 — Foundation ✅ (complete)
@@ -41,17 +42,19 @@ Goal: an empty but deployed site with navigation, theming and routing.
 - [x] Unit, component, Playwright smoke and axe accessibility tests (light + dark)
 - [ ] First successful GitHub Pages deployment (needs repository + push)
 
-## Phase 2 — Learning Engine (`src/core`)
+## Phase 2 — Learning Engine (`src/core`) ✅ (built 2026-11-15)
 
 Goal: the reusable machinery every domain plugs into.
 
-- `DomainModule` / `Lesson` / `Lab` / `Simulator` type model
-- Module registry and route generation
-- Progress store (localStorage, versioned schema, export/import JSON)
-- Lesson renderer (sections, callouts, code blocks, quizzes)
-- Simulator host component (play / pause / step / reset / speed)
-- Shared visualisation primitives (SVG canvas, Canvas hook, timeline)
-- Search across lessons (client-side index)
+- [x] `DomainModule` / `Lesson` / `Lab` / `Simulator` type model (ADR-0008)
+- [x] Module registry: id/slug validation, cross-reference checks, prerequisite DAG with cycle detection, route generation
+- [x] Progress store (localStorage, versioned strict schema, debounced persistence, export/import JSON with merge or replace)
+- [x] Lesson renderer (paragraphs with code spans, headings, lists, callouts, code blocks, embedded simulators, quizzes)
+- [x] Simulator host (play / pause / step / reset / speed, throttled live region, no autoplay, reduced-motion aware)
+- [x] `SvgStage` visualisation primitive and `useAnimationFrame`
+- [x] Client-side search across lessons and labs
+- [x] Pages: domain (lesson/lab lists with completion), lesson, lab (live check), search, progress (export/import/reset)
+- [ ] Canvas stage and timeline primitives (deferred until a simulator needs them)
 
 ## Phase 3 — First Domain: Networking
 

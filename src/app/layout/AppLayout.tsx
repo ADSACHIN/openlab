@@ -27,6 +27,18 @@ export function AppLayout() {
             >
               Domains
             </NavLink>
+            <NavLink
+              to="/search"
+              className={({ isActive }) => cx(styles.navLink, isActive && styles.navLinkActive)}
+            >
+              Search
+            </NavLink>
+            <NavLink
+              to="/progress"
+              className={({ isActive }) => cx(styles.navLink, isActive && styles.navLinkActive)}
+            >
+              Progress
+            </NavLink>
             <a href={REPO_URL} className={styles.navLink} rel="noopener">
               Source
             </a>

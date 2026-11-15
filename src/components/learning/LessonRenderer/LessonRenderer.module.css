@@ -1,0 +1,27 @@
+.flow {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 48rem;
+}
+
+.p {
+  font-size: var(--text-md);
+  line-height: 1.7;
+}
+
+.h2 {
+  font-size: var(--text-xl);
+  margin-top: var(--space-4);
+}
+
+.h3 {
+  font-size: var(--text-lg);
+  margin-top: var(--space-2);
+}
+
+.list {
+  padding-inline-start: var(--space-5);
+  display: grid;
+  gap: var(--space-1);
+  line-height: 1.7;
+}

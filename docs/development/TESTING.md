@@ -77,15 +77,14 @@ npm run test:a11y         # accessibility project only
 
 CI runs E2E against the production `dist/` via `vite preview` (see `.github/workflows/ci.yml`).
 
-## Status (2026-11-15)
+## Status (2026-11-15, after Phase 2)
 
-Phase 1 ships the first real tests, all passing locally:
-
-| Suite                     | Count | Covers                                                                       |
-| ------------------------- | ----- | ---------------------------------------------------------------------------- |
-| Vitest unit               | 14    | safe localStorage wrapper, preferences schema/guards, domain catalogue, `cx` |
-| Vitest component          | 7     | HomePage, DomainPage, full App (hash routing, 404, theme toggle persistence) |
-| Playwright e2e (chromium) | 6     | load, navigation, deep link + reload, 404, theme persistence, skip link      |
-| Playwright axe            | 6     | home, domain, 404 × light and dark, WCAG 2.x A/AA tags, zero violations      |
+| Suite                     | Count | Covers                                                                                                                           |
+| ------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Vitest unit               | 31    | storage, preferences, catalogue, `cx`, model helpers, graph, registry validation, progress schema/store, search                  |
+| Vitest component          | 12    | HomePage, DomainPage, App, Quiz, SimulatorHost (incl. fake-timer frame loop), LessonRenderer                                     |
+| Vitest integration        | 6     | full App with `tests/fixtures/exampleModule`: ordering, lesson + simulator + completion, quiz, lab check, search + progress, 404 |
+| Playwright e2e (chromium) | 6     | load, navigation, deep link + reload, 404, theme persistence, skip link                                                          |
+| Playwright axe            | 10    | home, domain, 404, search, progress × light and dark, zero violations                                                            |
 
 Firefox and mobile-chrome projects run in CI (only Chromium is installed locally).

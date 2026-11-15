@@ -30,7 +30,7 @@ domains live under `src/domains/`. There is **no backend**.
 
 ```
 src/app          shell, router, providers, layouts            (depends on: core, components, domains)
-src/core         learning engine: storage + preferences now; lesson/lab model, progress, registry in Phase 2  (depends on: types, utils)
+src/core         learning engine: model (types, define* helpers), registry (validation, DAG, routes), progress (store, schema, import/export), search, storage  (depends on: types, utils; React *types* only)
 src/components   shared presentational + interactive UI       (depends on: hooks, styles, types, utils)
 src/domains/*    one folder per domain; exports a DomainModule (depends on: core, components, hooks, types, utils)
 src/data         static catalogues (domain index, tags)       (depends on: types)
@@ -85,7 +85,18 @@ npm run test:a11y      # Playwright axe-core project
 
 ## Current phase
 
-**Phase 1 — Application Shell: built (2026-11-15).** Shell, HashRouter, theming, home catalogue,
-domain placeholder pages, 404, error boundary and the first unit/e2e/axe tests exist. Not yet
-pushed or deployed. Phase 2 (learning engine in `src/core`) starts only after explicit approval.
-See `ROADMAP.md` and `DEVELOPMENT_PROGRESS.md`.
+**Phase 2 — Learning Engine: built (2026-11-15).** The content model, registry, progress store,
+lesson renderer, simulator host and search exist with tests. `src/app/modules.ts` registers zero
+modules, so the live site shows every domain as "coming soon". Phase 3 (first domain: Networking)
+starts only after explicit approval. See `ROADMAP.md` and `DEVELOPMENT_PROGRESS.md`.
+
+### Authoring a domain module (for Phase 3+)
+
+- Export one `DomainModule` from `src/domains/<id>/index.ts` using `defineModule`, `defineLesson`,
+  `defineLab`, `defineSimulator` from `@core/model`; register it in `src/app/modules.ts`.
+- Ids are `<domainId>/<slug>`; prerequisites reference lesson ids and may cross domains.
+- Simulator engines are pure and seeded (`init`, `step`, optional `apply`/`isDone`, `describe`).
+  Views receive `{ state, dispatch, reducedMotion }` and render inside `SvgStage` where possible.
+- Lab `check(state)` is pure and returns `{ passed, message, score? }`.
+- The registry throws at startup on duplicate ids, bad slugs, dangling prerequisites, cycles,
+  unknown simulators and invalid quizzes, so `npm run test` catches authoring mistakes.

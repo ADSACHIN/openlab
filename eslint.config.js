@@ -32,6 +32,8 @@ export default tseslint.config(
     rules: {
       ...reactHooks.configs.recommended.rules,
       ...jsxA11y.configs.strict.rules,
+      // Scrollable code blocks carry role=region + tabIndex so keyboard users can scroll them.
+      'jsx-a11y/no-noninteractive-tabindex': ['error', { tags: [], roles: ['tabpanel', 'region'] }],
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       '@typescript-eslint/no-confusing-void-expression': ['error', { ignoreArrowShorthand: true }],
       '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],

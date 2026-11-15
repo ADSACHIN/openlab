@@ -1,15 +1,15 @@
-import { render, screen } from '@testing-library/react';
-import { MemoryRouter, Route, Routes } from 'react-router';
+import { screen } from '@testing-library/react';
+import { Route, Routes } from 'react-router';
 import { describe, expect, it } from 'vitest';
+import { renderWithProviders } from '../../../tests/fixtures/renderWithProviders';
 import { DomainPage } from './DomainPage';
 
 function renderAt(path: string) {
-  return render(
-    <MemoryRouter initialEntries={[path]}>
-      <Routes>
-        <Route path="domains/:domainId" element={<DomainPage />} />
-      </Routes>
-    </MemoryRouter>,
+  return renderWithProviders(
+    <Routes>
+      <Route path="domains/:domainId" element={<DomainPage />} />
+    </Routes>,
+    { initialEntries: [path] },
   );
 }
 

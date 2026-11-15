@@ -17,7 +17,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  // Local runs are capped: six parallel browsers plus axe saturate a laptop and cause 30 s navigation timeouts.
+  workers: process.env.CI ? 2 : 3,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : [['list']],
   use: {
     baseURL,

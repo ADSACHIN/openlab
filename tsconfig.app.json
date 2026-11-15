@@ -37,5 +37,5 @@
     },
     "types": ["vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src", "tests/setup.ts", "tests/unit", "tests/integration"]
+  "include": ["src", "tests/setup.ts", "tests/unit", "tests/integration", "tests/fixtures"]
 }

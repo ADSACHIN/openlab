@@ -5,14 +5,14 @@ Phase definitions: [ROADMAP.md](ROADMAP.md).
 
 ## Current status
 
-| Item               | State                                                              |
-| ------------------ | ------------------------------------------------------------------ |
-| Phase              | **1 — Application Shell** (built, not deployed)                    |
-| Phase 0 / 1 status | Both complete locally; Phase 1 deployment waits on the GitHub push |
-| Next phase         | 2 — Learning Engine (awaiting approval)                            |
-| Live deployment    | None yet                                                           |
-| Git                | `main`, first commit `004a900` (2026-11-15), no remote yet         |
-| GitHub remote      | Not created                                                        |
+| Item              | State                                                                     |
+| ----------------- | ------------------------------------------------------------------------- |
+| Phase             | **2 — Learning Engine** (built, not deployed)                             |
+| Phases 0–2 status | Complete locally; deployment waits on the GitHub push                     |
+| Next phase        | 3 — First domain: Networking (awaiting approval)                          |
+| Live deployment   | None yet                                                                  |
+| Git               | `main`, commits `004a900` (Phase 0), `37ca1a3` (Phase 1), Phase 2 pending |
+| GitHub remote     | `origin` → github.com/ADSACHIN/openlab (push blocked on credentials)      |
 
 ## Blockers / manual actions required
 
@@ -27,6 +27,18 @@ Phase definitions: [ROADMAP.md](ROADMAP.md).
 | 6   | (Optional) Install GitHub CLI                                                | Project owner | ⏳ Open |
 
 ## Log
+
+### 2026-11-15 — Phase 2: learning engine built
+
+- `src/core/model`: `DomainModule`, `Lesson`, `Lab`, `SimulatorDefinition/Engine`, `ContentBlock` union, `Quiz`; `define*` helpers derive ids. Core imports only the `ReactNode` _type_. ADR-0008 records the typed-blocks decision.
+- `src/core/registry`: validates ownership, slugs, duplicate ids, dangling prerequisites, unknown simulators, quiz integrity; topological lesson order with cycle path reporting; `routes()`, `prerequisitesOf`, `dependentsOf`.
+- `src/core/progress`: strict v1 schema (unknown keys rejected, prototype-pollution safe), `createProgressStore` with subscribe/debounced persist/flush, lab attempts with best score, quiz results, last visited, export/import (replace or merge, 256 KB cap, version check).
+- `src/core/search`: tokeniser, weighted prefix index, AND semantics.
+- Components: `LessonRenderer`, `InlineText`, `CodeBlock`, `Callout`, `Quiz`, `SimulatorHost`, `ContentList`, `viz/SvgStage`; hook `useAnimationFrame`.
+- App: `RegistryProvider`, `ProgressProvider` (flush on pagehide/visibilitychange), `RouteTracker`, pages Lesson/Lab/Search/Progress, Domain page lists content with completion, Home shows "continue" and derives availability from the registry. `App` accepts injected modules/store for tests.
+- Tests: 56 Vitest (unit, component, integration via `tests/fixtures/exampleModule.tsx`), a11y spec now covers search and progress routes.
+- React Compiler lint rules (react-hooks 7) shaped the design: no ref writes in render, no setState in effects; the frame loop keeps an authoritative state ref and announces from the loop.
+- Decisions: interfaces use property-function types (unbound-method rule); `View` is a plain render function so heterogeneous simulators fit one registry; `src/app/modules.ts` is empty until Phase 3, so production behaviour is unchanged apart from the new Search/Progress pages.
 
 ### 2026-11-15 — Phase 1: application shell built
 
