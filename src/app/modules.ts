@@ -1,7 +1,5 @@
 import type { DomainModule } from '@core/model';
+import { networkingModule } from '@domains/networking';
 
-/**
- * Every registered learning domain. Phase 3 adds the first real module
- * (networking); until then the catalogue shows every domain as "coming soon".
- */
-export const MODULES: readonly DomainModule[] = [];
+/** Every registered learning domain, in catalogue order. */
+export const MODULES: readonly DomainModule[] = [networkingModule];

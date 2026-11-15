@@ -85,12 +85,12 @@ npm run test:a11y      # Playwright axe-core project
 
 ## Current phase
 
-**Phase 2 — Learning Engine: built (2026-11-15).** The content model, registry, progress store,
-lesson renderer, simulator host and search exist with tests. `src/app/modules.ts` registers zero
-modules, so the live site shows every domain as "coming soon". Phase 3 (first domain: Networking)
-starts only after explicit approval. See `ROADMAP.md` and `DEVELOPMENT_PROGRESS.md`.
+**Phase 3 — Networking domain: built (2026-11-15).** The first real content lives in
+`src/domains/networking` (6 lessons, 6 simulators, 2 labs) and is registered in `src/app/modules.ts`.
+Phase 4 (domain expansion, starting with Linux & OS) starts only after explicit approval.
+See `ROADMAP.md` and `DEVELOPMENT_PROGRESS.md`.
 
-### Authoring a domain module (for Phase 3+)
+### Authoring a domain module (see `src/domains/networking` for the reference implementation)
 
 - Export one `DomainModule` from `src/domains/<id>/index.ts` using `defineModule`, `defineLesson`,
   `defineLab`, `defineSimulator` from `@core/model`; register it in `src/app/modules.ts`.

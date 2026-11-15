@@ -7,6 +7,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Versioning: [S
 
 ### Added
 
+- Networking domain (Phase 3): six lessons (OSI layers, encapsulation, IP addressing, DNS, TCP
+  handshake, TLS 1.3), six simulators, two graded labs, quizzes; InlineText now renders **bold**.
+
 - Learning engine (Phase 2): typed content model, validating module registry with prerequisite
   graph, versioned progress store with JSON export/import, lesson renderer, simulator host,
   SVG stage, client-side search, and domain/lesson/lab/search/progress pages.

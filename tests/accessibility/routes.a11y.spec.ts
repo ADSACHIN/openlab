@@ -7,6 +7,8 @@ const ROUTES: readonly { name: string; path: string }[] = [
   { name: 'not-found', path: './#/missing' },
   { name: 'search', path: './#/search' },
   { name: 'progress', path: './#/progress' },
+  { name: 'lesson', path: './#/domains/networking/lessons/tcp-handshake' },
+  { name: 'lab', path: './#/domains/networking/labs/size-a-subnet' },
 ];
 
 for (const theme of ['light', 'dark'] as const) {

@@ -5,14 +5,14 @@ Phase definitions: [ROADMAP.md](ROADMAP.md).
 
 ## Current status
 
-| Item              | State                                                                     |
-| ----------------- | ------------------------------------------------------------------------- |
-| Phase             | **2 — Learning Engine** (built, not deployed)                             |
-| Phases 0–2 status | Complete locally; deployment waits on the GitHub push                     |
-| Next phase        | 3 — First domain: Networking (awaiting approval)                          |
-| Live deployment   | None yet                                                                  |
-| Git               | `main`, commits `004a900` (Phase 0), `37ca1a3` (Phase 1), Phase 2 pending |
-| GitHub remote     | `origin` → github.com/ADSACHIN/openlab (push blocked on credentials)      |
+| Item              | State                                                                                   |
+| ----------------- | --------------------------------------------------------------------------------------- |
+| Phase             | **3 — Networking domain** (built, not deployed)                                         |
+| Phases 0–3 status | Complete locally; deployment waits on the GitHub push                                   |
+| Next phase        | 4 — Domain expansion, starting with Linux & OS (awaiting approval)                      |
+| Live deployment   | None yet                                                                                |
+| Git               | `main`: `004a900` Phase 0, `37ca1a3` Phase 1, `c53ae1b` Phase 2, Phase 3 pending commit |
+| GitHub remote     | `origin` → github.com/ADSACHIN/openlab (push blocked on credentials)                    |
 
 ## Blockers / manual actions required
 
@@ -27,6 +27,15 @@ Phase definitions: [ROADMAP.md](ROADMAP.md).
 | 6   | (Optional) Install GitHub CLI                                                | Project owner | ⏳ Open |
 
 ## Log
+
+### 2026-11-15 — Phase 3: Networking domain built
+
+- `src/domains/networking`: `lib/ipv4.ts` (pure address maths), six engines with tests (layer explorer, encapsulation, DNS referral chain, TCP handshake with seeded ISNs and mistake counting, TLS 1.3 flight sequence, subnet planner), six SVG views, a shared `SequenceDiagram` component, six lessons with outcomes/prerequisites/quizzes, two graded labs, module test.
+- Registered in `src/app/modules.ts`; Networking shows as Available in the catalogue; search and progress now have real content.
+- `InlineText` gained `**bold**` support (still no HTML interpretation).
+- Tests: 72 Vitest; Playwright adds a five-test networking journey (lesson + quiz + completion, both labs, search) and axe now audits a lesson and a lab route.
+- Build: app chunk 87 KB (gzip 29 KB). All domains ship in one chunk for now; per-domain lazy loading is deferred until a second domain exists (noted in ROADMAP).
+- Known content limits: lessons are intentionally compact first versions; diagrams are static SVG sequence/box drawings rather than animated packet flows.
 
 ### 2026-11-15 — Phase 2: learning engine built
 

@@ -14,6 +14,7 @@ flowchart LR
   style P0 fill:#2d6a4f,color:#fff
   style P1 fill:#2d6a4f,color:#fff
   style P2 fill:#2d6a4f,color:#fff
+  style P3 fill:#2d6a4f,color:#fff
 ```
 
 ## Phase 0 — Foundation ✅ (complete)
@@ -56,15 +57,18 @@ Goal: the reusable machinery every domain plugs into.
 - [x] Pages: domain (lesson/lab lists with completion), lesson, lab (live check), search, progress (export/import/reset)
 - [ ] Canvas stage and timeline primitives (deferred until a simulator needs them)
 
-## Phase 3 — First Domain: Networking
+## Phase 3 — First Domain: Networking ✅ (built 2026-11-15)
 
 Goal: prove the engine with one complete domain.
 
-- OSI & TCP/IP layer explorer
-- Packet journey simulator (encapsulation, routing)
-- Subnet calculator lab
-- DNS resolution walkthrough
-- TCP handshake and TLS handshake animations
+- [x] OSI & TCP/IP layer explorer (lesson + interactive simulator + quiz)
+- [x] Packet journey / encapsulation simulator
+- [x] IP addressing & subnetting lesson with subnet planner and quiz
+- [x] Subnet sizing lab (graded: too small / wasteful / tight)
+- [x] DNS resolution walkthrough (sequence-diagram simulator)
+- [x] TCP three-way handshake (step or hand-drive; out-of-order attempts counted) + lab
+- [x] TLS 1.3 handshake walkthrough
+- [ ] Per-domain lazy loading (all domains ship in one chunk today; revisit when a second domain lands)
 
 ## Phase 4 — Domain Expansion
 

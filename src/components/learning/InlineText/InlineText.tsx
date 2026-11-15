@@ -5,21 +5,27 @@ export interface InlineTextProps {
   text: string;
 }
 
-/** Renders plain text with `backtick` spans as <code>. No HTML is ever interpreted. */
+const TOKEN = /(`[^`]+`|\*\*[^*]+\*\*)/g;
+
+/** Renders plain text with `backtick` code spans and **bold** runs. No HTML is ever interpreted. */
 export function InlineText({ text }: InlineTextProps) {
-  const parts = text.split(/(`[^`]+`)/g);
+  const parts = text.split(TOKEN);
   return (
     <>
-      {parts.map((p, i) =>
-        p.startsWith('`') && p.endsWith('`') && p.length > 2 ? (
-          // Static split of a string: index keys are stable.
-          <code key={i} className={styles.code}>
-            {p.slice(1, -1)}
-          </code>
-        ) : (
-          <Fragment key={i}>{p}</Fragment>
-        ),
-      )}
+      {parts.map((p, i) => {
+        // Static split of a string: index keys are stable.
+        if (p.length > 2 && p.startsWith('`') && p.endsWith('`')) {
+          return (
+            <code key={i} className={styles.code}>
+              {p.slice(1, -1)}
+            </code>
+          );
+        }
+        if (p.length > 4 && p.startsWith('**') && p.endsWith('**')) {
+          return <strong key={i}>{p.slice(2, -2)}</strong>;
+        }
+        return <Fragment key={i}>{p}</Fragment>;
+      })}
     </>
   );
 }
