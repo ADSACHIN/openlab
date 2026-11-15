@@ -1,3 +1,4 @@
+import { InlineText } from '../InlineText';
 import styles from './CodeBlock.module.css';
 
 export interface CodeBlockProps {
@@ -22,7 +23,9 @@ export function CodeBlock({ language, code, caption }: CodeBlockProps) {
   return caption ? (
     <figure className={styles.figure}>
       {block}
-      <figcaption className={styles.caption}>{caption}</figcaption>
+      <figcaption className={styles.caption}>
+        <InlineText text={caption} />
+      </figcaption>
     </figure>
   ) : (
     block
