@@ -31,12 +31,20 @@ Explicitly **not** at risk: server credentials, personal data, payment data — 
 - **localStorage** stores only the progress schema under a namespaced key; nothing sensitive.
 - **No third-party scripts** at runtime. No CDN-loaded code. Fonts are self-hosted or system.
 - **Content Security Policy** injected into `index.html` at build time by the `openlab:csp` plugin in
-  `vite.config.ts` (production only; the dev server needs inline scripts and a websocket). Implemented in Phase 1: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'`.
+  `vite.config.ts` (production only; the dev server needs inline scripts and a websocket). Implemented in Phase 1: `default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'none'`.
   (`style-src 'unsafe-inline'` is needed for computed SVG/Canvas geometry; revisit if avoidable.)
-  Note: GitHub Pages does not let us set HTTP headers, so meta-CSP is the available mechanism and
-  `frame-ancestors` in a meta tag is advisory only.
+  Lazy domain chunks (ADR-0009) are same-origin scripts, so `script-src 'self'` covers them.
+  Note: GitHub Pages does not let us set HTTP headers, so meta-CSP is the available mechanism.
+  `frame-ancestors`, `report-uri` and `sandbox` are **ignored** in a meta-delivered policy, and
+  Chromium logs a console error for them, so they are deliberately omitted. Clickjacking protection
+  therefore requires response headers and is out of scope while hosting on GitHub Pages (see
+  `SECURITY.md`). Removed 2026-11-16 after an e2e console-error check surfaced the warning.
 - **Cybersecurity domain simulators** that _demonstrate_ vulnerabilities operate on simulated
-  state inside the app, never on the real DOM, real storage or real network.
+  state inside the app, never on the real DOM, real storage or real network. Concretely: SQL
+  injection runs against an in-memory table through a small purpose-built WHERE-clause
+  interpreter; the XSS simulator shows generated markup as text and computes a simulated browser
+  verdict, and an e2e test asserts no `<script>` element appears in the page; password and hash
+  demos never transmit input. Lessons state that attacking systems without authorisation is illegal.
 
 ### Dependencies
 
@@ -59,7 +67,18 @@ Explicitly **not** at risk: server credentials, personal data, payment data — 
 - `main` is protected (to configure after first push): require PR, require CI green, no force-push.
 - Private vulnerability reporting enabled (to configure after first push).
 
+## Shared lab setups (ADR-0013)
+
+- `?setup=` links are untrusted input: strict base64url/JSON/shape validation, size and step caps,
+  replay that converts any exception or non-object state into "not restorable", and a per-simulator
+  error boundary. A fuzz test replays junk logs against all 37 simulators.
+- Actions are rendered by React as text, so a link cannot inject markup. Links contain whatever the
+  learner did in the simulator, including typed shell commands; nothing is sent anywhere unless the
+  learner shares the link.
+
 ## Privacy
+
+- The service worker (ADR-0011) caches only the site’s own static files. It stores no learner data and makes no cross-origin requests.
 
 - No analytics, telemetry, cookies, fingerprinting or remote logging. Ever.
 - GitHub Pages' own server logs are outside our control and are covered by GitHub's privacy statement.

@@ -5,6 +5,7 @@ import { HomePage } from './pages/HomePage';
 import { LabPage } from './pages/LabPage';
 import { LessonPage } from './pages/LessonPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import { PathsPage } from './pages/PathsPage';
 import { ProgressPage } from './pages/ProgressPage';
 import { SearchPage } from './pages/SearchPage';
 
@@ -22,6 +23,7 @@ export function AppRoutes() {
         <Route path="domains/:domainId/labs/:slug" element={<LabPage />} />
         <Route path="search" element={<SearchPage />} />
         <Route path="progress" element={<ProgressPage />} />
+        <Route path="paths" element={<PathsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>

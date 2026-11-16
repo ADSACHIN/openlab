@@ -85,18 +85,34 @@ npm run test:a11y      # Playwright axe-core project
 
 ## Current phase
 
-**Phase 3 — Networking domain: built (2026-11-15).** The first real content lives in
-`src/domains/networking` (6 lessons, 6 simulators, 2 labs) and is registered in `src/app/modules.ts`.
-Phase 4 (domain expansion, starting with Linux & OS) starts only after explicit approval.
-See `ROADMAP.md` and `DEVELOPMENT_PROGRESS.md`.
+**Phases 0–6 complete (2026-11-16).** All eight domains, lazy loading, offline support, an i18n
+foundation, a CI performance budget, generators, learning paths (`#/paths`) and shareable lab
+setups (ADR-0013). WebAssembly is deferred by ADR-0012. The roadmap has no further phases; new work
+needs the owner’s direction. See `ROADMAP.md`.
 
 ### Authoring a domain module (see `src/domains/networking` for the reference implementation)
 
 - Export one `DomainModule` from `src/domains/<id>/index.ts` using `defineModule`, `defineLesson`,
-  `defineLab`, `defineSimulator` from `@core/model`; register it in `src/app/modules.ts`.
+  `defineLab`, `defineSimulator` from `@core/model`; register it as a **lazy loader** in
+  `src/app/modules.ts` (`import()` only — a static import of `@domains/*` in `src/app` defeats the
+  per-domain chunks, ADR-0009). Pages that need domain data call `useDomains([...])`.
 - Ids are `<domainId>/<slug>`; prerequisites reference lesson ids and may cross domains.
 - Simulator engines are pure and seeded (`init`, `step`, optional `apply`/`isDone`, `describe`).
   Views receive `{ state, dispatch, reducedMotion }` and render inside `SvgStage` where possible.
 - Lab `check(state)` is pure and returns `{ passed, message, score? }`.
+- Simulators driven only by the learner (a shell, a form, a slider) set `controls: 'reset'` so the
+  host hides Play/Step/Speed.
+- Every number stated in lesson prose or used as a lab threshold gets a unit test that computes it.
+- `tests/unit/all-modules.test.ts` fails if a `src/domains/<id>/index.ts` exists without a loader.
+- Scaffold with `npm run new:lesson|new:simulator -- <domain> <slug>`; the full checklist is in
+  `docs/contribution/AUTHORING_GUIDE.md`.
+- UI chrome text goes through `useT()` and `src/i18n/messages/en.ts` (ADR-0010); domain content stays
+  in the domain.
+- `npm run budget` must pass after `npm run build` (CI enforces it). Offline support: ADR-0011.
+- Engines must validate `apply` input: shared setups (ADR-0013) feed them untrusted actions, and
+  `tests/integration/share-fuzz.test.ts` replays junk logs against every simulator.
+- `npm run bench` times every engine (opt-in, not in CI); see ADR-0012 before proposing WebAssembly.
+- Node scripts are `.mjs` with JSDoc types, because this machine's Node build has no TypeScript
+  stripping; `tsc` checks them via `tsconfig.node.json`.
 - The registry throws at startup on duplicate ids, bad slugs, dangling prerequisites, cycles,
   unknown simulators and invalid quizzes, so `npm run test` catches authoring mistakes.

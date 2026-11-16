@@ -1,22 +1,17 @@
 import { Download, Trash2, Upload } from 'lucide-react';
 import { useId, useRef, useState } from 'react';
-import type { ImportResult } from '@core/progress';
 import { useDocumentTitle } from '@hooks/useDocumentTitle';
+import { useT } from '@i18n';
 import { useProgress } from '@app/providers/ProgressContext';
-import { useRegistry } from '@app/providers/RegistryContext';
+import { useDomains, useRegistry } from '@app/providers/RegistryContext';
 import styles from './ProgressPage.module.css';
 
-const REASONS: Record<Extract<ImportResult, { ok: false }>['reason'], string> = {
-  'too-large': 'That file is too large to be an OPENLAB progress export.',
-  'invalid-json': 'That file is not valid JSON.',
-  invalid: 'That file is not an OPENLAB progress export.',
-  'unsupported-version': 'That export comes from a newer version of OPENLAB. Update and try again.',
-};
-
 export function ProgressPage() {
-  useDocumentTitle('Your progress');
+  const t = useT();
+  useDocumentTitle(t('progress.docTitle'));
   const id = useId();
   const { progress, store } = useProgress();
+  useDomains('all');
   const { registry } = useRegistry();
   const fileInput = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState('');
@@ -38,7 +33,7 @@ export function ProgressPage() {
     a.download = `openlab-progress-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-    setMessage('Progress exported.');
+    setMessage(t('progress.exported'));
   };
 
   const importFile = async (file: File | undefined) => {
@@ -47,8 +42,12 @@ export function ProgressPage() {
     const result = store.importJson(text, 'merge');
     setMessage(
       result.ok
-        ? `Imported ${String(result.counts.lessons)} lessons, ${String(result.counts.labs)} labs and ${String(result.counts.quizzes)} quizzes.`
-        : REASONS[result.reason],
+        ? t('progress.imported', {
+            lessons: result.counts.lessons,
+            labs: result.counts.labs,
+            quizzes: result.counts.quizzes,
+          })
+        : t(`progress.error.${result.reason}`),
     );
     if (fileInput.current) fileInput.current.value = '';
   };
@@ -56,31 +55,29 @@ export function ProgressPage() {
   return (
     <section aria-labelledby={`${id}-title`} className={styles.page}>
       <h1 id={`${id}-title`} className={styles.title}>
-        Your progress
+        {t('progress.title')}
       </h1>
       <p className={styles.lede}>
-        Stored only in this browser
-        {store.persisted ? '' : ' (storage is unavailable, so it will not survive a reload)'}.
-        Export a file to move it to another device.
+        {store.persisted ? t('progress.ledeStored') : t('progress.ledeUnavailable')}
       </p>
 
       <dl className={styles.stats}>
         <div className={styles.stat}>
-          <dt>Lessons completed</dt>
+          <dt>{t('progress.lessons')}</dt>
           <dd>
             {String(lessonsDone)}
             {lessonsTotal > 0 && <span className={styles.of}> / {String(lessonsTotal)}</span>}
           </dd>
         </div>
         <div className={styles.stat}>
-          <dt>Labs passed</dt>
+          <dt>{t('progress.labs')}</dt>
           <dd>
             {String(labsPassed)}
             {labsTotal > 0 && <span className={styles.of}> / {String(labsTotal)}</span>}
           </dd>
         </div>
         <div className={styles.stat}>
-          <dt>Quiz answers correct</dt>
+          <dt>{t('progress.quiz')}</dt>
           <dd>
             {String(quizCorrect)}
             {quizTotal > 0 && <span className={styles.of}> / {String(quizTotal)}</span>}
@@ -90,10 +87,10 @@ export function ProgressPage() {
 
       <div className={styles.actions}>
         <button type="button" className={styles.primary} onClick={exportFile}>
-          <Download size={16} aria-hidden="true" focusable="false" /> Export JSON
+          <Download size={16} aria-hidden="true" focusable="false" /> {t('progress.export')}
         </button>
         <label className={styles.secondary}>
-          <Upload size={16} aria-hidden="true" focusable="false" /> Import JSON
+          <Upload size={16} aria-hidden="true" focusable="false" /> {t('progress.import')}
           <input
             ref={fileInput}
             type="file"
@@ -106,17 +103,17 @@ export function ProgressPage() {
         </label>
         {confirmReset ? (
           <span className={styles.confirm}>
-            Delete all progress?
+            {t('progress.confirmReset')}
             <button
               type="button"
               className={styles.danger}
               onClick={() => {
                 store.reset();
                 setConfirmReset(false);
-                setMessage('Progress cleared.');
+                setMessage(t('progress.cleared'));
               }}
             >
-              Yes, delete
+              {t('progress.confirmYes')}
             </button>
             <button
               type="button"
@@ -125,7 +122,7 @@ export function ProgressPage() {
                 setConfirmReset(false);
               }}
             >
-              Cancel
+              {t('progress.confirmNo')}
             </button>
           </span>
         ) : (
@@ -136,7 +133,7 @@ export function ProgressPage() {
               setConfirmReset(true);
             }}
           >
-            <Trash2 size={16} aria-hidden="true" focusable="false" /> Reset
+            <Trash2 size={16} aria-hidden="true" focusable="false" /> {t('progress.reset')}
           </button>
         )}
       </div>

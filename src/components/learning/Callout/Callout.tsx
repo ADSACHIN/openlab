@@ -1,13 +1,14 @@
 import { Info, Lightbulb, TriangleAlert } from 'lucide-react';
+import { useT } from '@i18n';
 import type { CalloutTone } from '@core/model/types';
 import { cx } from '@utils/cx';
 import { InlineText } from '../InlineText';
 import styles from './Callout.module.css';
 
-const META: Record<CalloutTone, { Icon: typeof Info; defaultTitle: string }> = {
-  info: { Icon: Info, defaultTitle: 'Note' },
-  tip: { Icon: Lightbulb, defaultTitle: 'Tip' },
-  warning: { Icon: TriangleAlert, defaultTitle: 'Careful' },
+const ICONS: Record<CalloutTone, typeof Info> = {
+  info: Info,
+  tip: Lightbulb,
+  warning: TriangleAlert,
 };
 
 export interface CalloutProps {
@@ -17,7 +18,9 @@ export interface CalloutProps {
 }
 
 export function Callout({ tone, title, text }: CalloutProps) {
-  const { Icon, defaultTitle } = META[tone];
+  const t = useT();
+  const Icon = ICONS[tone];
+  const defaultTitle = t(`callout.${tone}`);
   return (
     <aside className={cx(styles.callout, styles[tone])} aria-label={title ?? defaultTitle}>
       <Icon size={18} aria-hidden="true" focusable="false" className={styles.icon} />

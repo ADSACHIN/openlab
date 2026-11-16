@@ -1,6 +1,7 @@
 import { defineConfig } from 'vitest/config';
 import type { Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
+import { serviceWorkerPlugin } from './scripts/lib/service-worker.mjs';
 import { fileURLToPath, URL } from 'node:url';
 
 /**
@@ -15,7 +16,8 @@ import { fileURLToPath, URL } from 'node:url';
 /**
  * Content Security Policy, injected only into the production build: the dev
  * server needs inline scripts (React Fast Refresh) and a websocket (HMR).
- * Mirrors docs/security/SECURITY_POLICY.md.
+ * Mirrors docs/security/SECURITY_POLICY.md. frame-ancestors is omitted on purpose: browsers ignore it
+ * in a meta-delivered policy and log a console error.
  */
 const CSP = [
   "default-src 'self'",
@@ -27,7 +29,6 @@ const CSP = [
   "object-src 'none'",
   "base-uri 'self'",
   "form-action 'none'",
-  "frame-ancestors 'none'",
 ].join('; ');
 
 const cspPlugin: Plugin = {
@@ -46,7 +47,7 @@ const src = (p: string) => fileURLToPath(new URL(`./src/${p}`, import.meta.url))
 
 export default defineConfig({
   base: process.env.VITE_BASE_PATH ?? '/openlab/',
-  plugins: [react(), cspPlugin],
+  plugins: [react(), cspPlugin, serviceWorkerPlugin()],
   resolve: {
     alias: {
       '@': src(''),
@@ -56,6 +57,7 @@ export default defineConfig({
       '@domains': src('domains'),
       '@data': src('data'),
       '@hooks': src('hooks'),
+      '@i18n': src('i18n'),
       '@styles': src('styles'),
       '@typings': src('types'),
       '@utils': src('utils'),
@@ -72,6 +74,11 @@ export default defineConfig({
     rolldownOptions: {
       output: {
         // Keep React in a stable chunk so it caches well between deploys (Rolldown codeSplitting).
+        // Name lazy domain chunks after their domain, e.g. assets/domain-networking-<hash>.js.
+        chunkFileNames: (chunk: { facadeModuleId: string | null }) => {
+          const m = /\/src\/domains\/([^/]+)\//.exec(chunk.facadeModuleId ?? '');
+          return m ? `assets/domain-${m[1]}-[hash].js` : 'assets/[name]-[hash].js';
+        },
         codeSplitting: {
           groups: [
             {
@@ -92,10 +99,15 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./tests/setup.ts'],
+    // Generous: user-event tests can exceed 5 s on a loaded laptop without anything being wrong.
+    testTimeout: 15_000,
     include: [
       'src/**/*.{test,spec}.{ts,tsx}',
       'tests/unit/**/*.{test,spec}.{ts,tsx}',
       'tests/integration/**/*.{test,spec}.{ts,tsx}',
+      'tests/scripts/**/*.test.ts',
+      // Opt-in timing (skipped unless VITE_BENCH=1): see tests/bench/engines.test.ts.
+      'tests/bench/**/*.test.ts',
     ],
     exclude: ['node_modules', 'dist', 'tests/e2e', 'tests/accessibility'],
     css: { modules: { classNameStrategy: 'non-scoped' } },

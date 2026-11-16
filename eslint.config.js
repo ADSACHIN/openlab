@@ -61,5 +61,11 @@ export default tseslint.config(
     languageOptions: { globals: { ...globals.node } },
     rules: { 'no-restricted-imports': 'off' },
   },
+  {
+    // Node scripts are plain ESM JavaScript with JSDoc types (checked by tsc via tsconfig.node.json).
+    files: ['scripts/**/*.mjs'],
+    extends: [js.configs.recommended],
+    languageOptions: { globals: { ...globals.node } },
+  },
   prettier,
 );

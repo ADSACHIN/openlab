@@ -66,6 +66,7 @@ export const subnetPlanner = defineSimulator({
   description: 'Choose a prefix length and see the resulting block.',
   engine: subnetPlannerEngine,
   View: SubnetPlannerView,
+  controls: 'reset',
 });
 
 export const simulators = [

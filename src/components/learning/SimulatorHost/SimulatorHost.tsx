@@ -1,7 +1,11 @@
 import { Pause, Play, RotateCcw, StepForward } from 'lucide-react';
 import { useCallback, useId, useRef, useState } from 'react';
 import type { SimulatorDefinition } from '@core/model/types';
+import { appendAction, appendSteps, replayLog, totalSteps } from '@utils/share';
+import type { ActionLog } from '@utils/share';
 import { useAnimationFrame } from '@hooks/useAnimationFrame';
+import { useT } from '@i18n';
+import { SimulatorErrorBoundary } from './SimulatorErrorBoundary';
 import styles from './SimulatorHost.module.css';
 
 const SPEEDS = [0.5, 1, 2, 4] as const;
@@ -15,6 +19,10 @@ export interface SimulatorHostProps<S, A> {
   /** Fires on every state change (labs use it to run their check). */
   onStateChange?: (state: S) => void;
   caption?: string;
+  /** Start from a shared setup (ADR-0013). Ignored if it cannot be replayed. */
+  initialLog?: ActionLog;
+  /** Fires with the learner's history after every step, action or reset. */
+  onLogChange?: (log: ActionLog) => void;
 }
 
 /**
@@ -27,15 +35,27 @@ export function SimulatorHost<S, A>({
   reducedMotion,
   onStateChange,
   caption,
+  initialLog,
+  onLogChange,
 }: SimulatorHostProps<S, A>) {
+  const t = useT();
   const { engine, View, tickRate = 2 } = simulator;
+  const playback = simulator.controls !== 'reset';
   const base = useId();
-  const [state, setState] = useState<S>(() => engine.init(seed));
+  // A shared setup is replayed once, on mount; if it cannot be replayed the host starts fresh.
+  const [boot] = useState(() => {
+    const restored = initialLog ? replayLog(engine, seed, initialLog) : null;
+    return restored !== null && initialLog
+      ? { state: restored, log: initialLog }
+      : { state: engine.init(seed), log: [] as ActionLog };
+  });
+  const [state, setState] = useState<S>(boot.state);
   // The frame loop may run several times between renders; it reads the latest state from here.
   const stateRef = useRef(state);
+  const logRef = useRef<ActionLog>(boot.log);
   const [running, setRunning] = useState(false);
   const [speed, setSpeed] = useState<Speed>(1);
-  const [ticks, setTicks] = useState(0);
+  const [ticks, setTicks] = useState(() => totalSteps(boot.log));
   const accumulator = useRef(0);
   // While playing, the live region is refreshed from the frame loop at most once a second.
   const [playingAnnouncement, setPlayingAnnouncement] = useState('');
@@ -55,10 +75,19 @@ export function SimulatorHost<S, A>({
     [onStateChange],
   );
 
+  const record = useCallback(
+    (next: ActionLog) => {
+      logRef.current = next;
+      onLogChange?.(next);
+    },
+    [onLogChange],
+  );
+
   const stepOnce = useCallback(() => {
     if (done) return;
     update(engine.step(state), 1);
-  }, [done, engine, state, update]);
+    record(appendSteps(logRef.current, 1));
+  }, [done, engine, state, update, record]);
 
   const reset = () => {
     setRunning(false);
@@ -66,14 +95,16 @@ export function SimulatorHost<S, A>({
     const init = engine.init(seed);
     setTicks(0);
     update(init, 0);
+    record([]);
   };
 
   const dispatch = useCallback(
     (action: A) => {
       if (!engine.apply) return;
       update(engine.apply(state, action), 0);
+      record(appendAction(logRef.current, action));
     },
-    [engine, state, update],
+    [engine, state, update, record],
   );
 
   // Time → engine steps. Reduced motion still allows play, but at a calm pace.
@@ -93,6 +124,7 @@ export function SimulatorHost<S, A>({
     }
     if (stepped > 0) {
       update(next, stepped);
+      record(appendSteps(logRef.current, stepped));
       const now = performance.now();
       if (now - lastAnnounce.current >= ANNOUNCE_INTERVAL_MS) {
         lastAnnounce.current = now;
@@ -108,65 +140,77 @@ export function SimulatorHost<S, A>({
           {simulator.title}
         </span>
         <span className={styles.ticks} aria-hidden="true">
-          step {String(ticks)}
+          {t('sim.stepCount', { count: ticks })}
         </span>
       </figcaption>
 
       <div className={styles.stage}>
-        <View state={state} dispatch={dispatch} reducedMotion={reducedMotion} />
+        <SimulatorErrorBoundary onReset={reset}>
+          <View state={state} dispatch={dispatch} reducedMotion={reducedMotion} />
+        </SimulatorErrorBoundary>
       </div>
 
-      <div className={styles.controls} role="group" aria-label={`${simulator.title} controls`}>
-        <button
-          type="button"
-          className={styles.primary}
-          onClick={() => {
-            lastAnnounce.current = performance.now();
-            setRunning((r) => !r);
-          }}
-          disabled={done}
-          aria-pressed={isRunning}
-        >
-          {running ? (
-            <Pause size={16} aria-hidden="true" focusable="false" />
-          ) : (
-            <Play size={16} aria-hidden="true" focusable="false" />
-          )}
-          {isRunning ? 'Pause' : 'Play'}
-        </button>
-        <button
-          type="button"
-          className={styles.button}
-          onClick={stepOnce}
-          disabled={running || done}
-        >
-          <StepForward size={16} aria-hidden="true" focusable="false" />
-          Step
-        </button>
+      <div
+        className={styles.controls}
+        role="group"
+        aria-label={t('sim.controls', { title: simulator.title })}
+      >
+        {playback && (
+          <>
+            <button
+              type="button"
+              className={styles.primary}
+              onClick={() => {
+                lastAnnounce.current = performance.now();
+                setRunning((r) => !r);
+              }}
+              disabled={done}
+              aria-pressed={isRunning}
+            >
+              {isRunning ? (
+                <Pause size={16} aria-hidden="true" focusable="false" />
+              ) : (
+                <Play size={16} aria-hidden="true" focusable="false" />
+              )}
+              {isRunning ? t('sim.pause') : t('sim.play')}
+            </button>
+            <button
+              type="button"
+              className={styles.button}
+              onClick={stepOnce}
+              disabled={isRunning || done}
+            >
+              <StepForward size={16} aria-hidden="true" focusable="false" />
+              {t('sim.step')}
+            </button>
+          </>
+        )}
         <button type="button" className={styles.button} onClick={reset}>
           <RotateCcw size={16} aria-hidden="true" focusable="false" />
-          Reset
+          {t('sim.reset')}
         </button>
-        <label className={styles.speed}>
-          Speed
-          <select
-            value={speed}
-            onChange={(e) => {
-              const v = Number(e.target.value);
-              setSpeed(SPEEDS.find((s) => s === v) ?? 1);
-            }}
-          >
-            {SPEEDS.map((s) => (
-              <option key={s} value={s}>
-                ×{String(s)}
-              </option>
-            ))}
-          </select>
-        </label>
-        {done && <span className={styles.done}>Finished</span>}
+        {playback && (
+          <label className={styles.speed}>
+            {t('sim.speed')}
+            <select
+              value={speed}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setSpeed(SPEEDS.find((s) => s === v) ?? 1);
+              }}
+            >
+              {SPEEDS.map((s) => (
+                <option key={s} value={s}>
+                  {t('sim.speedOption', { speed: s })}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
+        {playback && done && <span className={styles.done}>{t('sim.finished')}</span>}
       </div>
 
-      <p className={styles.live} role="status" aria-live="polite" aria-label="Simulation status">
+      <p className={styles.live} role="status" aria-live="polite" aria-label={t('sim.status')}>
         {announcement}
       </p>
       {caption && <p className={styles.caption}>{caption}</p>}

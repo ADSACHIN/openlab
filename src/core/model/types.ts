@@ -91,6 +91,11 @@ export interface SimulatorDefinition<S, A = never> {
   View: (props: SimulatorViewProps<S, A>) => ReactNode;
   /** Engine steps per second at speed ×1. Default 2. */
   tickRate?: number;
+  /**
+   * 'playback' (default) shows Play, Step and Speed. 'reset' shows only Reset, for simulators
+   * driven entirely by the learner (a shell, a form, a slider) where time has no meaning.
+   */
+  controls?: 'playback' | 'reset';
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- existential type: a module holds simulators with heterogeneous state/action types

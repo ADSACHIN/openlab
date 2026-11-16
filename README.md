@@ -8,7 +8,7 @@ Learn technology by _doing_ — interactive visualizations, simulators, lessons 
 Zero cost. No account. No tracking. Runs entirely in your browser.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Status: Phase 0](https://img.shields.io/badge/status-phase%203%20%E2%80%94%20networking-blue)](ROADMAP.md)
+[![Status: Phase 0](https://img.shields.io/badge/status-phase%204%20%E2%80%94%20domains-blue)](ROADMAP.md)
 [![Static Site](https://img.shields.io/badge/hosting-GitHub%20Pages-222)](docs/architecture/SYSTEM_ARCHITECTURE.md)
 
 </div>
@@ -38,7 +38,7 @@ no paid API and no telemetry. Your progress lives in your own browser's `localSt
 | **AI & ML**          | Perceptrons, gradient descent, tokenisation, attention — interactively           |
 | **Cloud & DevOps**   | CI/CD, containers, infrastructure as code, observability                         |
 
-> **Status:** Phases 1–3 are built: app shell, learning engine, and the first domain (Networking: 6 lessons, 6 simulators, 2 labs). More domains follow in Phase 4.
+> **Status:** All eight domains are built (38 lessons, 37 simulators, 17 labs), with learning paths across domains, shareable lab setups and offline support. The roadmap’s six phases are complete.
 > See [ROADMAP.md](ROADMAP.md) and [DEVELOPMENT_PROGRESS.md](DEVELOPMENT_PROGRESS.md).
 
 ## Principles

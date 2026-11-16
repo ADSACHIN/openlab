@@ -1,0 +1,37 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.field {
+  display: grid;
+  gap: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.field input {
+  accent-color: var(--color-accent);
+}
+
+.legend {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.stats dt {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.stats dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-weight: var(--weight-medium);
+}

@@ -1,4 +1,5 @@
 import { InlineText } from '../InlineText';
+import { useT } from '@i18n';
 import styles from './CodeBlock.module.css';
 
 export interface CodeBlockProps {
@@ -8,13 +9,14 @@ export interface CodeBlockProps {
 }
 
 export function CodeBlock({ language, code, caption }: CodeBlockProps) {
+  const t = useT();
   const block = (
     // Scrollable regions must be keyboard reachable (axe: scrollable-region-focusable).
     <pre
       className={styles.pre}
       tabIndex={0}
       role="region"
-      aria-label={caption ?? `${language} code`}
+      aria-label={caption ?? t('code.label', { language })}
       data-language={language}
     >
       <code className={styles.code}>{code}</code>

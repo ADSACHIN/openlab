@@ -1,0 +1,70 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.readout {
+  display: flex;
+  gap: var(--space-4);
+  align-items: baseline;
+  font-family: var(--font-mono);
+}
+
+.symbolic {
+  font-size: var(--text-xl);
+  letter-spacing: 0.08em;
+}
+
+.octal {
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+  font-weight: var(--weight-bold);
+}
+
+.grid {
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.grid th,
+.grid td {
+  padding: var(--space-1) var(--space-3);
+  text-align: center;
+}
+
+.grid th[scope='row'] {
+  text-align: left;
+  color: var(--color-text-muted);
+}
+
+.grid input {
+  width: 1.1rem;
+  height: 1.1rem;
+  accent-color: var(--color-accent);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.presets {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+
+.preset {
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  font-family: var(--font-mono);
+  color: var(--color-text);
+}
+
+.explain {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

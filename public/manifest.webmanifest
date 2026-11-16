@@ -1,0 +1,11 @@
+{
+  "name": "OPENLAB — Interactive Technology Learning",
+  "short_name": "OPENLAB",
+  "description": "Free, open-source interactive technology learning. Runs entirely in your browser.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7f8fa",
+  "theme_color": "#1d4ed8",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

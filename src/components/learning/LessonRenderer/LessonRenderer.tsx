@@ -1,4 +1,5 @@
 import type { AnySimulatorDefinition, ContentBlock, Lesson } from '@core/model/types';
+import { useT } from '@i18n';
 import { Callout } from '../Callout';
 import { CodeBlock } from '../CodeBlock';
 import { InlineText } from '../InlineText';
@@ -44,6 +45,7 @@ interface BlockProps {
 }
 
 function Block({ block, resolveSimulator, reducedMotion, onQuizComplete }: BlockProps) {
+  const t = useT();
   switch (block.type) {
     case 'paragraph':
       return (
@@ -87,8 +89,8 @@ function Block({ block, resolveSimulator, reducedMotion, onQuizComplete }: Block
         return (
           <Callout
             tone="warning"
-            title="Missing simulator"
-            text={`Simulator \`${block.simulatorId}\` is not registered.`}
+            title={t('lesson.missingSimulatorTitle')}
+            text={t('lesson.missingSimulatorText', { id: block.simulatorId })}
           />
         );
       }

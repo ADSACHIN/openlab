@@ -15,6 +15,9 @@ flowchart LR
   style P1 fill:#2d6a4f,color:#fff
   style P2 fill:#2d6a4f,color:#fff
   style P3 fill:#2d6a4f,color:#fff
+  style P4 fill:#2d6a4f,color:#fff
+  style P5 fill:#2d6a4f,color:#fff
+  style P6 fill:#2d6a4f,color:#fff
 ```
 
 ## Phase 0 — Foundation ✅ (complete)
@@ -68,33 +71,33 @@ Goal: prove the engine with one complete domain.
 - [x] DNS resolution walkthrough (sequence-diagram simulator)
 - [x] TCP three-way handshake (step or hand-drive; out-of-order attempts counted) + lab
 - [x] TLS 1.3 handshake walkthrough
-- [ ] Per-domain lazy loading (all domains ship in one chunk today; revisit when a second domain lands)
+- [x] Per-domain lazy loading (ADR-0009, 2026-11-16)
 
-## Phase 4 — Domain Expansion
+## Phase 4 — Domain Expansion ✅ (complete 2026-11-16)
 
 One domain at a time, each with ≥ 3 lessons, ≥ 1 simulator, ≥ 1 lab.
 
-1. Linux & OS (terminal simulator, filesystem explorer, process scheduler)
-2. Programming (algorithm visualiser, data structure playground)
-3. Computer Science (logic gate simulator, CPU pipeline)
-4. Cybersecurity (crypto playground, auth flow walkthroughs, sandboxed vuln demos)
-5. System Design (load balancer / cache / queue simulators)
-6. Cloud & DevOps (pipeline builder, container lifecycle)
-7. AI & ML (perceptron, gradient descent, attention visualiser)
+1. ~~Linux & OS~~ ✅ 2026-11-15 — sandbox shell on an immutable virtual filesystem, permission bits, round-robin scheduler, FIFO/LRU paging; 5 lessons, 2 labs
+2. ~~Programming~~ ✅ 2026-11-15 — code tracer (incl. a buggy variant), stack/queue, sorting visualiser, binary search; 5 lessons, 2 labs
+3. ~~Computer Science~~ ✅ 2026-11-16 — 8-bit register, logic gates, 4-bit ripple-carry adder, tiny accumulator CPU, divisible-by-3 DFA; 5 lessons, 2 labs
+4. ~~Cybersecurity~~ ✅ 2026-11-16 — Caesar brute force, password entropy, salted/unsalted dictionary attack on real SHA-256, SQL injection against a tiny SQL interpreter, simulated XSS; 5 lessons, 2 labs
+5. ~~System Design~~ ✅ 2026-11-16 — load balancer with a slow server, LRU cache under Zipf traffic, message queue with Little’s law, replication quorum; 4 lessons, 2 labs
+6. ~~Cloud & DevOps~~ ✅ 2026-11-16 — commit graph, CI/CD job graph, Docker layer cache, error budget; 4 lessons, 3 labs
+7. ~~AI & ML~~ ✅ 2026-11-16 — perceptron (incl. XOR), gradient descent on an ill-conditioned bowl, BPE tokenizer, softmax temperature sampling; 4 lessons, 2 labs. Attention/transformers deferred: see Phase 6
 
-## Phase 5 — Community & Polish
+## Phase 5 — Community & Polish ✅ (complete 2026-11-16)
 
-- Content authoring guide and lesson template generator script
-- i18n foundation
-- PWA (offline support via service worker — still static, still free)
-- Performance budget enforcement in CI
-- Contributor onboarding issues
+- [x] Content authoring guide and lesson/simulator generators (`npm run new:lesson`, `npm run new:simulator`)
+- [x] i18n foundation for UI text (ADR-0010); content translation still to come
+- [x] Offline support via a build-generated service worker and web app manifest (ADR-0011)
+- [x] Performance budget enforced in CI (`npm run budget`)
+- [x] Contributor onboarding: ten ready-to-file starter issues (`docs/contribution/GOOD_FIRST_ISSUES.md`)
 
-## Phase 6 — Advanced Labs
+## Phase 6 — Advanced Labs ✅ (complete 2026-11-16)
 
-- WebAssembly-powered simulators where JS is too slow
-- Shareable lab state via URL hash encoding
-- Learning paths spanning domains (uses the knowledge graph)
+- [x] Learning paths spanning domains: `#/paths`, built from the prerequisite graph
+- [x] Shareable lab state via URL hash encoding: replayable action logs (ADR-0013)
+- [x] WebAssembly: evaluated and **deferred** with benchmark evidence (ADR-0012); revisit criteria recorded
 
 ## Explicit non-goals
 

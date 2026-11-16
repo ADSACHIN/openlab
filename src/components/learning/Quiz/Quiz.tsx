@@ -1,4 +1,5 @@
 import { useId, useState } from 'react';
+import { useT } from '@i18n';
 import type { Quiz as QuizModel } from '@core/model/types';
 import { cx } from '@utils/cx';
 import { InlineText } from '../InlineText';
@@ -15,6 +16,7 @@ export interface QuizProps {
 }
 
 export function Quiz({ quiz, onComplete }: QuizProps) {
+  const t = useT();
   const base = useId();
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [checked, setChecked] = useState(false);
@@ -34,7 +36,7 @@ export function Quiz({ quiz, onComplete }: QuizProps) {
   return (
     <section className={styles.quiz} aria-labelledby={`${base}-title`}>
       <h3 id={`${base}-title`} className={styles.title}>
-        {quiz.title ?? 'Check your understanding'}
+        {quiz.title ?? t('quiz.title')}
       </h3>
       <ol className={styles.questions}>
         {quiz.questions.map((q, qi) => {
@@ -86,7 +88,11 @@ export function Quiz({ quiz, onComplete }: QuizProps) {
                   )}
                 >
                   <strong>
-                    {isCorrect ? 'Correct.' : chosen === undefined ? 'Not answered.' : 'Not quite.'}
+                    {isCorrect
+                      ? t('quiz.correct')
+                      : chosen === undefined
+                        ? t('quiz.unanswered')
+                        : t('quiz.wrong')}
                   </strong>{' '}
                   <InlineText text={q.explanation} />
                 </p>
@@ -98,7 +104,7 @@ export function Quiz({ quiz, onComplete }: QuizProps) {
       <div className={styles.actions}>
         {checked ? (
           <button type="button" className={styles.secondary} onClick={retry}>
-            Try again
+            {t('quiz.retry')}
           </button>
         ) : (
           <button
@@ -107,13 +113,11 @@ export function Quiz({ quiz, onComplete }: QuizProps) {
             onClick={check}
             disabled={answered < total}
           >
-            Check answers
+            {t('quiz.check')}
           </button>
         )}
         <p className={styles.status} role="status" aria-live="polite">
-          {checked
-            ? `You got ${String(correct)} of ${String(total)} correct.`
-            : `${String(answered)} of ${String(total)} answered.`}
+          {checked ? t('quiz.score', { correct, total }) : t('quiz.progress', { answered, total })}
         </p>
       </div>
     </section>

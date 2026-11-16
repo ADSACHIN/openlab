@@ -77,14 +77,21 @@ npm run test:a11y         # accessibility project only
 
 CI runs E2E against the production `dist/` via `vite preview` (see `.github/workflows/ci.yml`).
 
-## Status (2026-11-15, after Phase 2)
+## Status (2026-11-16, Phase 4 complete)
 
-| Suite                     | Count | Covers                                                                                                                           |
-| ------------------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Vitest unit               | 31    | storage, preferences, catalogue, `cx`, model helpers, graph, registry validation, progress schema/store, search                  |
-| Vitest component          | 12    | HomePage, DomainPage, App, Quiz, SimulatorHost (incl. fake-timer frame loop), LessonRenderer                                     |
-| Vitest integration        | 6     | full App with `tests/fixtures/exampleModule`: ordering, lesson + simulator + completion, quiz, lab check, search + progress, 404 |
-| Playwright e2e (chromium) | 6     | load, navigation, deep link + reload, 404, theme persistence, skip link                                                          |
-| Playwright axe            | 10    | home, domain, 404, search, progress × light and dark, zero violations                                                            |
+| Suite                                 | Count                 | Notes                                                                                |
+| ------------------------------------- | --------------------- | ------------------------------------------------------------------------------------ |
+| Vitest (unit, component, integration) | 190 tests in 41 files | Every number stated in lesson prose or used as a lab threshold is computed by a test |
+| Playwright e2e + axe, dev server      | 77                    | 25 routes × light/dark audited with zero violations; zero browser console errors     |
+| Playwright e2e, production preview    | 35                    | Runs with the production CSP and lazily loaded, hash-named domain chunks             |
 
-Firefox and mobile-chrome projects run in CI (only Chromium is installed locally).
+Run the browser suites against both targets:
+
+```bash
+npm run test:e2e && npm run test:a11y          # dev server
+npm run build && npx vite preview --port 4173 &
+PLAYWRIGHT_BASE_URL=http://localhost:4173/openlab/ npx playwright test tests/e2e --project=chromium
+```
+
+Workers are capped at 2: more parallel browsers produced false timeouts on a laptop.
+Treat any browser console error as a failure; `tests/e2e/lazy-loading.spec.ts` enforces it.

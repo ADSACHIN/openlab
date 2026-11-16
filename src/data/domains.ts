@@ -30,10 +30,10 @@ export const DOMAINS: readonly DomainSummary[] = [
     title: 'Cybersecurity',
     tagline: 'Think like an attacker, build like a defender.',
     description:
-      'Threat modelling, cryptography fundamentals, authentication flows and web vulnerabilities, demonstrated in sandboxed simulators.',
+      'Ciphers and keyspace, password strength, hashing and salting, SQL injection and cross-site scripting — attacked and defended inside sandboxed simulators.',
     icon: 'shield',
     status: 'planned',
-    topics: ['Threat modelling', 'Cryptography', 'Auth & sessions', 'Web vulnerabilities'],
+    topics: ['Keys & ciphers', 'Password hashing', 'SQL injection', 'XSS'],
   },
   {
     id: 'programming',
@@ -60,30 +60,30 @@ export const DOMAINS: readonly DomainSummary[] = [
     title: 'Computer Science',
     tagline: 'From a single bit to a running CPU.',
     description:
-      'Binary and logic gates, the CPU and memory model, complexity, automata and how compilers turn text into instructions.',
+      'Binary and two\u2019s complement, logic gates, an adder built from gates, a working CPU, and the finite automata behind regular expressions.',
     icon: 'cpu',
     status: 'planned',
-    topics: ['Binary & logic', 'CPU & memory', 'Automata', 'Compilers'],
+    topics: ['Binary & logic', 'Adders', 'CPU cycle', 'Automata'],
   },
   {
     id: 'ai-ml',
     title: 'AI & ML',
     tagline: 'Train a model with your own hands.',
     description:
-      'Vectors, perceptrons, gradient descent, neural networks and attention, each with an interactive model you can tune.',
+      'Perceptrons, gradient descent, how text becomes tokens, and how a language model picks its next word — each with a model you can tune.',
     icon: 'brain',
     status: 'planned',
-    topics: ['Perceptron', 'Gradient descent', 'Neural networks', 'Attention'],
+    topics: ['Perceptron', 'Gradient descent', 'Tokenization', 'Sampling'],
   },
   {
     id: 'cloud-devops',
     title: 'Cloud & DevOps',
     tagline: 'Ship it, watch it, fix it.',
     description:
-      'Version control, CI/CD pipelines, containers, infrastructure as code and observability, built up piece by piece.',
+      'Version control, CI/CD pipelines, container image layers and reliability targets, built up piece by piece.',
     icon: 'cloud',
     status: 'planned',
-    topics: ['Git', 'CI/CD', 'Containers', 'Observability'],
+    topics: ['Git', 'CI/CD', 'Containers', 'SLOs'],
   },
 ];
 

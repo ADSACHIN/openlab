@@ -85,3 +85,47 @@
 .fail {
   color: var(--color-warning);
 }
+
+.shareButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  color: var(--color-text);
+  font-weight: var(--weight-medium);
+}
+
+.notice {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent);
+  background: var(--color-accent-soft);
+  font-size: var(--text-sm);
+}
+
+.noticeFailed {
+  border-color: var(--color-warning);
+}
+
+.share {
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+}
+
+.shareField {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.shareField input {
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+}

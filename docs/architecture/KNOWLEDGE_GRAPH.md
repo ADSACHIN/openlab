@@ -159,12 +159,12 @@ graph TB
 
 ### How the graph is used
 
-| Feature                                  | Uses                                                   |
-| ---------------------------------------- | ------------------------------------------------------ |
-| Lesson page "Before this" / "Learn next" | Direct prerequisite / dependent edges                  |
-| Domain overview                          | Topological order of lessons within the domain         |
-| Learning paths (Phase 6)                 | Shortest prerequisite closure to a target lesson       |
-| Content validation script                | Detects cycles, dangling prerequisites, orphan lessons |
+| Feature                                      | Uses                                                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------------------- |
+| Lesson page "Before this" / "Learn next"     | Direct prerequisite / dependent edges                                                 |
+| Domain overview                              | Topological order of lessons within the domain                                        |
+| Learning paths (`#/paths`, built in Phase 6) | Prerequisite closure of a goal lesson, in global topological order (`src/core/paths`) |
+| Content validation script                    | Detects cycles, dangling prerequisites, orphan lessons                                |
 
 ### Metadata contract (Phase 2)
 

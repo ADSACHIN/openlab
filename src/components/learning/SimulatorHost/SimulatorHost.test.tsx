@@ -1,4 +1,4 @@
-import { act, render, screen } from '@testing-library/react';
+import { act, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 import { defineSimulator } from '@core/model/helpers';
@@ -74,5 +74,98 @@ describe('<SimulatorHost>', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+});
+
+describe('<SimulatorHost> with controls="reset"', () => {
+  it('shows only Reset for interactive-only simulators', async () => {
+    const interactive = defineSimulator<S, 'bump' | 'noop'>({
+      domainId: 'programming',
+      slug: 'interactive',
+      title: 'Interactive',
+      description: '',
+      controls: 'reset',
+      engine: {
+        init: () => ({ n: 0 }),
+        step: (s) => s,
+        apply: (s, a) => (a === 'bump' ? { n: s.n + 1 } : s),
+        describe: (s) => `n=${String(s.n)}`,
+      },
+      View: ({ state, dispatch }) => (
+        <button type="button" onClick={() => dispatch('bump')}>
+          bump {state.n}
+        </button>
+      ),
+    });
+    render(<SimulatorHost simulator={interactive} reducedMotion={false} />);
+    const user = userEvent.setup();
+    expect(screen.queryByRole('button', { name: 'Play' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Step' })).toBeNull();
+    expect(screen.queryByLabelText('Speed')).toBeNull();
+    await user.click(screen.getByRole('button', { name: 'bump 0' }));
+    expect(screen.getByRole('status', { name: 'Simulation status' })).toHaveTextContent('n=1');
+    await user.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(screen.getByRole('status', { name: 'Simulation status' })).toHaveTextContent('n=0');
+  });
+});
+
+describe('<SimulatorHost> history and recovery', () => {
+  it('records steps and actions, restores from a log, and clears on reset', async () => {
+    const logs: unknown[] = [];
+    const { unmount } = render(
+      <SimulatorHost simulator={counter} reducedMotion={false} onLogChange={(l) => logs.push(l)} />,
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Step' }));
+    await user.click(screen.getByRole('button', { name: 'Step' }));
+    await user.click(screen.getByRole('button', { name: 'bump' }));
+    expect(logs.at(-1)).toEqual([2, { a: 'bump' }]);
+    await user.click(screen.getByRole('button', { name: 'Reset' }));
+    expect(logs.at(-1)).toEqual([]);
+    unmount();
+
+    render(
+      <SimulatorHost simulator={counter} reducedMotion={false} initialLog={[2, { a: 'bump' }]} />,
+    );
+    expect(screen.getByRole('status', { name: 'value' })).toHaveTextContent('12');
+    expect(screen.getByText('step 2')).toBeInTheDocument();
+  });
+
+  it('starts fresh when the log cannot be replayed', () => {
+    render(
+      <SimulatorHost
+        simulator={counter}
+        reducedMotion={false}
+        initialLog={[{ a: { not: 'an action' } }, 1]}
+      />,
+    );
+    // apply returns the state unchanged for unknown actions, so this replays to n = 1
+    expect(screen.getByRole('status', { name: 'Simulation status' })).toHaveTextContent(
+      'Count is 1',
+    );
+  });
+
+  it('contains a crashing view and recovers on reset', async () => {
+    const fragile = defineSimulator<S, 'bump' | 'noop'>({
+      domainId: 'programming',
+      slug: 'fragile',
+      title: 'Fragile',
+      description: '',
+      engine: counter.engine,
+      View: ({ state }) => {
+        if (state.n >= 2) throw new Error('view cannot draw this state');
+        return <output aria-label="value">{state.n}</output>;
+      },
+    });
+    const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    render(<SimulatorHost simulator={fragile} reducedMotion={false} />);
+    const user = userEvent.setup();
+    await user.click(screen.getByRole('button', { name: 'Step' }));
+    await user.click(screen.getByRole('button', { name: 'Step' }));
+    expect(screen.getByRole('alert')).toHaveTextContent(/ran into a problem/);
+    expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument();
+    await user.click(within(screen.getByRole('alert')).getByRole('button', { name: 'Reset' }));
+    expect(screen.getByRole('status', { name: 'value' })).toHaveTextContent('0');
+    spy.mockRestore();
   });
 });

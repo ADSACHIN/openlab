@@ -37,18 +37,22 @@ npx playwright install --with-deps chromium firefox   # ~500 MB; sudo may be pro
 
 ## Scripts
 
-| Command                                         | Purpose                                     |
-| ----------------------------------------------- | ------------------------------------------- |
-| `npm run dev`                                   | Vite dev server with HMR                    |
-| `npm run build`                                 | Type-check then production build to `dist/` |
-| `npm run preview`                               | Serve `dist/` locally                       |
-| `npm run typecheck`                             | `tsc -b --noEmit`                           |
-| `npm run lint` / `lint:fix`                     | ESLint                                      |
-| `npm run format` / `format:check`               | Prettier                                    |
-| `npm run test` / `test:watch` / `test:coverage` | Vitest                                      |
-| `npm run test:e2e` / `test:e2e:ui`              | Playwright                                  |
-| `npm run test:a11y`                             | Playwright accessibility project only       |
-| `npm run validate`                              | Everything CI runs except e2e               |
+| Command                                         | Purpose                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------- |
+| `npm run dev`                                   | Vite dev server with HMR                                                  |
+| `npm run build`                                 | Type-check then production build to `dist/`                               |
+| `npm run preview`                               | Serve `dist/` locally                                                     |
+| `npm run typecheck`                             | `tsc -b --noEmit`                                                         |
+| `npm run lint` / `lint:fix`                     | ESLint                                                                    |
+| `npm run format` / `format:check`               | Prettier                                                                  |
+| `npm run test` / `test:watch` / `test:coverage` | Vitest                                                                    |
+| `npm run test:e2e` / `test:e2e:ui`              | Playwright                                                                |
+| `npm run test:a11y`                             | Playwright accessibility project only                                     |
+| `npm run validate`                              | Everything CI runs except e2e                                             |
+| `npm run budget`                                | Check the production build against the performance budget (after `build`) |
+| `npm run new:lesson -- <domain> <slug>`         | Scaffold a lesson                                                         |
+| `npm run new:simulator -- <domain> <slug>`      | Scaffold a simulator (engine, view, styles, test)                         |
+| `npm run bench`                                 | Time every simulator engine (opt-in; see ADR-0012)                        |
 
 ## VS Code
 

@@ -42,10 +42,11 @@ flowchart TB
 | `app`         | everything below                                                  | —                                                     |
 | `domains/<x>` | `core`, `components`, `hooks`, `utils`, `types`, `styles`, `data` | `app`, **any other domain**                           |
 | `core`        | `utils`, `types`                                                  | `app`, `domains`, `components`, `hooks` (no React UI) |
-| `components`  | `hooks`, `utils`, `types`, `styles`                               | `app`, `domains`, `core`*                             |
+| `components`  | `hooks`, `utils`, `types`, `styles`, `i18n`                       | `app`, `domains`, `core`*                             |
 | `data`        | `types`                                                           | everything else                                       |
 | `hooks`       | `utils`, `types`                                                  | `app`, `domains`, `components`, `core`*               |
 | `utils`       | `types`                                                           | everything else                                       |
+| `i18n`        | React, `types`                                                    | everything else (ADR-0010)                            |
 | `types`       | nothing                                                           | everything                                            |
 | `styles`      | nothing (CSS only)                                                | —                                                     |
 

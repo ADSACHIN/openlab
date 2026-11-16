@@ -16,7 +16,16 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "allowJs": true,
+    "checkJs": true
   },
-  "include": ["vite.config.ts", "playwright.config.ts", "tests/e2e", "tests/accessibility"]
+  "include": [
+    "vite.config.ts",
+    "playwright.config.ts",
+    "tests/e2e",
+    "tests/accessibility",
+    "scripts/**/*.mjs",
+    "tests/scripts"
+  ]
 }

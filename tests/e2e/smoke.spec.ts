@@ -39,6 +39,8 @@ test.describe('smoke', () => {
 
   test('skip link moves focus to main content', async ({ page }) => {
     await page.goto('./');
+    // Wait for React to render; pressing Tab before that focuses nothing (a test race, seen in CI-like runs).
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await page.keyboard.press('Tab');
     await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused();
     await page.keyboard.press('Enter');

@@ -4,12 +4,15 @@ import { Link, useSearchParams } from 'react-router';
 import { search } from '@core/search';
 import { findDomain } from '@data/domains';
 import { useDocumentTitle } from '@hooks/useDocumentTitle';
-import { useRegistry } from '@app/providers/RegistryContext';
+import { useT } from '@i18n';
+import { useDomains, useRegistry } from '@app/providers/RegistryContext';
 import styles from './SearchPage.module.css';
 
 export function SearchPage() {
-  useDocumentTitle('Search');
+  const t = useT();
+  useDocumentTitle(t('search.docTitle'));
   const id = useId();
+  useDomains('all');
   const { searchIndex } = useRegistry();
   const [params, setParams] = useSearchParams();
   const [query, setQuery] = useState(params.get('q') ?? '');
@@ -19,7 +22,7 @@ export function SearchPage() {
   return (
     <section aria-labelledby={`${id}-title`} className={styles.page}>
       <h1 id={`${id}-title`} className={styles.title}>
-        Search lessons and labs
+        {t('search.title')}
       </h1>
       <form
         role="search"
@@ -30,7 +33,7 @@ export function SearchPage() {
         }}
       >
         <label htmlFor={`${id}-q`} className="visually-hidden">
-          Search query
+          {t('search.label')}
         </label>
         <SearchIcon size={18} aria-hidden="true" focusable="false" className={styles.icon} />
         <input
@@ -41,17 +44,17 @@ export function SearchPage() {
           onChange={(e) => {
             setQuery(e.target.value);
           }}
-          placeholder={total > 0 ? 'e.g. handshake, subnet, scheduler' : 'No content yet'}
+          placeholder={total > 0 ? t('search.placeholder') : t('search.placeholderEmpty')}
           autoComplete="off"
           disabled={total === 0}
         />
       </form>
       <p className={styles.status} role="status" aria-live="polite">
         {total === 0
-          ? 'Nothing to search yet — the first lessons arrive with the Networking domain.'
+          ? t('search.nothing')
           : query.trim() === ''
-            ? `${String(total)} lessons and labs indexed.`
-            : `${String(hits.length)} result${hits.length === 1 ? '' : 's'} for “${query}”.`}
+            ? t('search.indexed', { count: total })
+            : t('search.results', { count: hits.length, query })}
       </p>
       {hits.length > 0 && (
         <ol className={styles.results}>
@@ -61,7 +64,7 @@ export function SearchPage() {
                 {h.title}
               </Link>
               <span className={styles.hitMeta}>
-                {findDomain(h.domainId)?.title ?? h.domainId} · {h.kind}
+                {findDomain(h.domainId)?.title ?? h.domainId} · {t(`search.kind.${h.kind}`)}
               </span>
               <p className={styles.hitSummary}>{h.summary}</p>
             </li>

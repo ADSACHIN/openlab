@@ -29,6 +29,13 @@ review criteria, is in [docs/contribution/CONTRIBUTING_GUIDE.md](docs/contributi
    component tests; new pages ship with an accessibility test.
 6. **Be kind.** See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
+## Writing content
+
+Scaffold with `npm run new:lesson -- <domain> <slug>` or `npm run new:simulator -- <domain> <slug>`, then follow
+[docs/contribution/AUTHORING_GUIDE.md](docs/contribution/AUTHORING_GUIDE.md). Translators: see
+[docs/contribution/TRANSLATING.md](docs/contribution/TRANSLATING.md). Looking for a first task? See
+[docs/contribution/GOOD_FIRST_ISSUES.md](docs/contribution/GOOD_FIRST_ISSUES.md).
+
 ## Development workflow
 
 ```bash

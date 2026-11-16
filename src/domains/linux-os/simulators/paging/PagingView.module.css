@@ -1,0 +1,37 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+  align-items: end;
+  font-size: var(--text-sm);
+}
+
+.fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--space-3);
+}
+
+.fieldset legend {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.controls input[type='range'] {
+  display: block;
+  width: 12rem;
+  accent-color: var(--color-accent);
+}
+
+.stats {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

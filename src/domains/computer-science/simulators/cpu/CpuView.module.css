@@ -1,0 +1,111 @@
+.wrap {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 40rem) {
+  .wrap {
+    grid-template-columns: 14rem 1fr;
+  }
+}
+
+.memory {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  width: 100%;
+}
+
+.memory caption,
+.heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  text-align: left;
+  margin-bottom: var(--space-1);
+}
+
+.memory th,
+.memory td {
+  padding: 2px var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.data td {
+  color: var(--color-text-muted);
+}
+
+.current {
+  background: var(--color-accent-soft);
+}
+
+.current td {
+  color: var(--color-text);
+  font-weight: var(--weight-bold);
+}
+
+.label,
+.pc {
+  font-size: var(--text-xs);
+  color: var(--color-accent);
+}
+
+.side {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+}
+
+.regs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.regs dt {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.regs dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+}
+
+.note {
+  font-size: var(--text-sm);
+  min-height: 2.6em;
+}
+
+.output {
+  margin: 0;
+  min-height: 2rem;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  background: var(--color-text);
+  color: var(--color-bg);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.edit {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+}
+
+.edit input {
+  width: 4rem;
+  min-height: 2.25rem;
+  padding: 0 var(--space-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+}

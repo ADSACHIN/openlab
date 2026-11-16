@@ -1,4 +1,5 @@
 import { CircleCheck, Circle, Clock } from 'lucide-react';
+import { useT } from '@i18n';
 import { Link } from 'react-router';
 import { cx } from '@utils/cx';
 import styles from './ContentList.module.css';
@@ -20,6 +21,7 @@ export interface ContentListProps {
 }
 
 export function ContentList({ items, ariaLabel }: ContentListProps) {
+  const t = useT();
   return (
     <ol className={styles.list} aria-label={ariaLabel}>
       {items.map((item, i) => (
@@ -31,13 +33,13 @@ export function ContentList({ items, ariaLabel }: ContentListProps) {
             <Link to={item.to} className={styles.link}>
               <span className={styles.index}>{String(i + 1)}.</span> {item.title}
               {item.badge && <span className={styles.badge}>{item.badge}</span>}
-              {item.done && <span className="visually-hidden"> (completed)</span>}
+              {item.done && <span className="visually-hidden">{t('lesson.completedSuffix')}</span>}
             </Link>
             <p className={styles.summary}>{item.summary}</p>
           </div>
           <span className={styles.minutes}>
             <Clock size={14} aria-hidden="true" focusable="false" />
-            {String(item.minutes)} min
+            {t('lesson.minutes', { count: item.minutes })}
           </span>
         </li>
       ))}

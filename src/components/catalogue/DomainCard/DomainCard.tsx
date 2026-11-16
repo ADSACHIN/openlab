@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import type { DomainSummary } from '@typings/domain';
 import { DomainIcon } from '@components/ui/DomainIcon';
 import { StatusBadge } from '@components/ui/StatusBadge';
+import { useT } from '@i18n';
 import styles from './DomainCard.module.css';
 
 export interface DomainCardProps {
@@ -11,6 +12,7 @@ export interface DomainCardProps {
 }
 
 export function DomainCard({ domain, to }: DomainCardProps) {
+  const t = useT();
   const headingId = `domain-${domain.id}-title`;
   return (
     <article className={styles.card} aria-labelledby={headingId}>
@@ -27,10 +29,10 @@ export function DomainCard({ domain, to }: DomainCardProps) {
           <StatusBadge status={domain.status} />
         </div>
         <p className={styles.tagline}>{domain.tagline}</p>
-        <ul className={styles.topics} aria-label={`${domain.title} topics`}>
-          {domain.topics.map((t) => (
-            <li key={t} className={styles.topic}>
-              {t}
+        <ul className={styles.topics} aria-label={t('domainCard.topics', { domain: domain.title })}>
+          {domain.topics.map((topic) => (
+            <li key={topic} className={styles.topic}>
+              {topic}
             </li>
           ))}
         </ul>

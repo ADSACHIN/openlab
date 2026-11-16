@@ -6,17 +6,20 @@ import { ContentList } from '@components/learning/ContentList';
 import { DomainIcon } from '@components/ui/DomainIcon';
 import { StatusBadge } from '@components/ui/StatusBadge';
 import { useDocumentTitle } from '@hooks/useDocumentTitle';
+import { useT } from '@i18n';
 import { useProgress } from '@app/providers/ProgressContext';
-import { useRegistry } from '@app/providers/RegistryContext';
+import { useDomains, useRegistry } from '@app/providers/RegistryContext';
 import { NotFoundPage } from './NotFoundPage';
 import styles from './DomainPage.module.css';
 
 export function DomainPage() {
   const { domainId = '' } = useParams();
+  const t = useT();
   const domain = findDomain(domainId);
+  useDomains([domainId]);
   const { registry } = useRegistry();
   const { progress } = useProgress();
-  useDocumentTitle(domain?.title ?? 'Not found');
+  useDocumentTitle(domain?.title ?? t('notFound.docTitle'));
 
   if (!domain) return <NotFoundPage />;
 
@@ -30,7 +33,7 @@ export function DomainPage() {
     <article className={styles.page} aria-labelledby="domain-title">
       <Link to="/" className={styles.back}>
         <ArrowLeft size={16} aria-hidden="true" focusable="false" />
-        All domains
+        {t('domain.back')}
       </Link>
       <header className={styles.header}>
         <div className={styles.icon}>
@@ -51,13 +54,13 @@ export function DomainPage() {
           {lessons.length > 0 && (
             <section aria-labelledby="lessons-title" className={styles.section}>
               <h2 id="lessons-title" className={styles.sectionTitle}>
-                Lessons{' '}
+                {t('domain.lessons')}{' '}
                 <span className={styles.count}>
-                  {String(completed)} / {String(lessons.length)} done
+                  {t('domain.lessonsDone', { done: completed, total: lessons.length })}
                 </span>
               </h2>
               <ContentList
-                ariaLabel={`${domain.title} lessons`}
+                ariaLabel={t('domain.lessonsList', { domain: domain.title })}
                 items={lessons.map((l) => ({
                   id: l.id,
                   title: l.title,
@@ -72,10 +75,10 @@ export function DomainPage() {
           {labs.length > 0 && (
             <section aria-labelledby="labs-title" className={styles.section}>
               <h2 id="labs-title" className={styles.sectionTitle}>
-                Labs
+                {t('domain.labs')}
               </h2>
               <ContentList
-                ariaLabel={`${domain.title} labs`}
+                ariaLabel={t('domain.labsList', { domain: domain.title })}
                 items={labs.map((l) => ({
                   id: l.id,
                   title: l.title,
@@ -83,7 +86,7 @@ export function DomainPage() {
                   to: paths.lab(l.domainId, l.slug),
                   minutes: l.estimatedMinutes,
                   done: progress.labResults[l.id]?.passed ?? false,
-                  badge: 'Lab',
+                  badge: t('domain.labBadge'),
                 }))}
               />
             </section>
@@ -93,7 +96,7 @@ export function DomainPage() {
         <>
           <section aria-labelledby="topics-title" className={styles.section}>
             <h2 id="topics-title" className={styles.sectionTitle}>
-              What you will explore
+              {t('domain.topics')}
             </h2>
             <ul className={styles.topics}>
               {domain.topics.map((t) => (
@@ -102,8 +105,7 @@ export function DomainPage() {
             </ul>
           </section>
           <p className={styles.notice} role="status">
-            This domain is on the roadmap and not built yet. Lessons, simulators and labs will
-            appear here as they land.
+            {t('domain.planned')}
           </p>
         </>
       )}

@@ -33,9 +33,18 @@
       "@hooks/*": ["src/hooks/*"],
       "@styles/*": ["src/styles/*"],
       "@typings/*": ["src/types/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@i18n/*": ["src/i18n/*"],
+      "@i18n": ["src/i18n/index.ts"]
     },
     "types": ["vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src", "tests/setup.ts", "tests/unit", "tests/integration", "tests/fixtures"]
+  "include": [
+    "src",
+    "tests/setup.ts",
+    "tests/unit",
+    "tests/integration",
+    "tests/fixtures",
+    "tests/bench"
+  ]
 }

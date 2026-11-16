@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import type { ErrorInfo, ReactNode } from 'react';
+import { useT } from '@i18n';
 import styles from './ErrorBoundary.module.css';
 
 interface Props {
@@ -28,21 +29,27 @@ export class ErrorBoundary extends Component<Props, State> {
   override render(): ReactNode {
     const { error } = this.state;
     if (!error) return this.props.children;
-    return (
-      <main className={styles.wrap} role="alert">
-        <h1 className={styles.title}>Something went wrong</h1>
-        <p>The page hit an unexpected error. Reloading usually fixes it; your progress is safe.</p>
-        <pre className={styles.detail}>{error.message}</pre>
-        <button
-          type="button"
-          className={styles.button}
-          onClick={() => {
-            window.location.reload();
-          }}
-        >
-          Reload
-        </button>
-      </main>
-    );
+    return <ErrorFallback message={error.message} />;
   }
+}
+
+/** Function component so the fallback can use hooks (translations). */
+function ErrorFallback({ message }: { message: string }) {
+  const t = useT();
+  return (
+    <main className={styles.wrap} role="alert">
+      <h1 className={styles.title}>{t('error.title')}</h1>
+      <p>{t('error.text')}</p>
+      <pre className={styles.detail}>{message}</pre>
+      <button
+        type="button"
+        className={styles.button}
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        {t('error.reload')}
+      </button>
+    </main>
+  );
 }

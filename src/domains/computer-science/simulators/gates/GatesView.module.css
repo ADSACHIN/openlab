@@ -1,0 +1,85 @@
+.wrap {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 40rem) {
+  .wrap {
+    grid-template-columns: 1fr 10rem;
+  }
+
+  .gates {
+    grid-column: 1 / -1;
+  }
+}
+
+.gates {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.gates legend {
+  padding: 0;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-muted);
+}
+
+.circuit {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.inputs {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.input {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border-strong);
+  font-family: var(--font-mono);
+  color: var(--color-text);
+}
+
+.inputOn {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-accent-contrast);
+}
+
+.output {
+  font-family: var(--font-mono);
+}
+
+.table {
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  align-self: start;
+}
+
+.table caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  text-align: left;
+  margin-bottom: var(--space-1);
+}
+
+.table th,
+.table td {
+  padding: var(--space-1) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.current {
+  background: var(--color-accent-soft);
+  font-weight: var(--weight-bold);
+}

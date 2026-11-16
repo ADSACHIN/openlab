@@ -5,21 +5,24 @@ import { contentId } from '@core/model';
 import { paths } from '@core/registry';
 import { LessonRenderer } from '@components/learning/LessonRenderer';
 import { useDocumentTitle } from '@hooks/useDocumentTitle';
+import { useT } from '@i18n';
 import { usePreferences } from '@app/providers/PreferencesContext';
 import { useProgress } from '@app/providers/ProgressContext';
-import { useRegistry } from '@app/providers/RegistryContext';
+import { useDomains, useRegistry } from '@app/providers/RegistryContext';
 import { cx } from '@utils/cx';
 import { NotFoundPage } from './NotFoundPage';
 import styles from './LessonPage.module.css';
 
 export function LessonPage() {
   const { domainId = '', slug = '' } = useParams();
+  const t = useT();
+  useDomains([domainId]);
   const { registry } = useRegistry();
   const { progress, store } = useProgress();
   const { reducedMotion } = usePreferences();
   const lesson = registry.getLesson(contentId(domainId as never, slug));
   const domain = findDomain(domainId);
-  useDocumentTitle(lesson?.title ?? 'Not found');
+  useDocumentTitle(lesson?.title ?? t('notFound.docTitle'));
 
   if (!lesson || !domain) return <NotFoundPage />;
 
@@ -42,21 +45,26 @@ export function LessonPage() {
         <p className={styles.meta}>
           <span>
             <Clock size={14} aria-hidden="true" focusable="false" />{' '}
-            {String(lesson.estimatedMinutes)} min
+            {t('lesson.minutes', { count: lesson.estimatedMinutes })}
           </span>
           {done && (
             <span className={styles.doneTag}>
-              <CircleCheck size={14} aria-hidden="true" focusable="false" /> Completed
+              <CircleCheck size={14} aria-hidden="true" focusable="false" /> {t('lesson.completed')}
             </span>
           )}
         </p>
       </header>
 
       {(prereqs.length > 0 || lesson.outcomes.length > 0) && (
-        <aside className={styles.sidebar} aria-label="Lesson overview">
+        <aside className={styles.sidebar} aria-label={t('lesson.overview')}>
           {prereqs.length > 0 && (
             <div>
-              <h2 className={styles.sideTitle}>Before this</h2>
+              <h2 className={styles.sideTitle}>{t('lesson.before')}</h2>
+              <p className={styles.pathLink}>
+                <Link to={`/paths?goal=${encodeURIComponent(lesson.id)}`}>
+                  {t('lesson.pathLink')}
+                </Link>
+              </p>
               <ul className={styles.sideList}>
                 {prereqs.map((p) => (
                   <li
@@ -65,7 +73,7 @@ export function LessonPage() {
                   >
                     <Link to={paths.lesson(p.domainId, p.slug)}>{p.title}</Link>
                     {p.id in progress.completedLessons && (
-                      <span className="visually-hidden"> (completed)</span>
+                      <span className="visually-hidden">{t('lesson.completedSuffix')}</span>
                     )}
                   </li>
                 ))}
@@ -74,7 +82,7 @@ export function LessonPage() {
           )}
           {lesson.outcomes.length > 0 && (
             <div>
-              <h2 className={styles.sideTitle}>After this you can</h2>
+              <h2 className={styles.sideTitle}>{t('lesson.after')}</h2>
               <ul className={styles.sideList}>
                 {lesson.outcomes.map((o) => (
                   <li key={o}>{o}</li>
@@ -105,11 +113,11 @@ export function LessonPage() {
           }}
         >
           <CircleCheck size={18} aria-hidden="true" focusable="false" />
-          {done ? 'Completed — click to undo' : 'Mark as complete'}
+          {done ? t('lesson.undoComplete') : t('lesson.markComplete')}
         </button>
         {next.length > 0 && (
-          <nav aria-label="Learn next" className={styles.next}>
-            <span className={styles.nextLabel}>Learn next:</span>
+          <nav aria-label={t('lesson.learnNext')} className={styles.next}>
+            <span className={styles.nextLabel}>{t('lesson.learnNextLabel')}</span>
             {next.map((n) => (
               <Link key={n.id} to={paths.lesson(n.domainId, n.slug)}>
                 {n.title}
